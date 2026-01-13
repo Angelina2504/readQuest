@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+
+  # Service name : identify in Compose + allows other services to reach it
+  db:
+    # Official image + tag
+    image: mysql:8.4
+    container_name: readquest-mysql
+    restart: unless-stopped
+
+    # send environment variables to the container
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+       # port in the container : port on the PC.
+       # If everything stays "in Docker" (Symfony + phpMyAdmin in containers), you can remove the ports
+       - "3306:3306"
+
+       # Volume name in container + location of the data in the container
+    volumes:
+       - mysql_data:/var/lib/mysql
+
+  volumes:
+      # Named Docker volume (default settings) to persist MySQL data
+      mysql_data :
