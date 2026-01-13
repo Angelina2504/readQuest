@@ -25,6 +25,6 @@ services:
     volumes:
        - mysql_data:/var/lib/mysql
 
-  volumes:
-      # Named Docker volume (default settings) to persist MySQL data
-      mysql_data :
+volumes:
+  # Named Docker volume (default settings) to persist MySQL data
+  mysql_data :
