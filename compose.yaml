@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   # Service name : identify in Compose + allows other services to reach it
@@ -19,7 +17,7 @@ services:
     ports:
        # port in the container : port on the PC.
        # If everything stays "in Docker" (Symfony + phpMyAdmin in containers), you can remove the ports
-       - "3306:3306"
+       - "3307:3307"
 
        # Volume name in container + location of the data in the container
     volumes:
