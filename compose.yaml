@@ -17,12 +17,44 @@ services:
     ports:
        # port in the container : port on the PC.
        # If everything stays "in Docker" (Symfony + phpMyAdmin in containers), you can remove the ports
-       - "3307:3307"
+       - "3307:3306"
 
-       # Volume name in container + location of the data in the container
+    # Volume name in container + location of the data in the container
     volumes:
        - mysql_data:/var/lib/mysql
+
+      # Verification
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: node:18-alpine
+    container_name: readquest-node
+    working_dir: /app
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    environment:
+      - NODE_ENV=development
+      - VITE_HOST=0.0.0.0
+
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+    restart: unless-stopped
+
+    depends_on:
+      db:
+         condition: service_healthy
 
 volumes:
   # Named Docker volume (default settings) to persist MySQL data
   mysql_data :
+
