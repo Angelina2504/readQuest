@@ -1,7 +1,7 @@
 services:
 
   # Service name : identify in Compose + allows other services to reach it
-  db:
+  dbsql:
     # Official image + tag
     image: mysql:8.4
     container_name: readquest-mysql
@@ -29,6 +29,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  dbmongo:
+
+    image: mongo:8.0
+    container_name: readquest-mongodb
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+     
 
   frontend:
     image: node:20-alpine
