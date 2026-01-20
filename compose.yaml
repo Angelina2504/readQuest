@@ -17,7 +17,7 @@ services:
     ports:
        # port in the container : port on the PC.
        # If everything stays "in Docker" (Symfony + phpMyAdmin in containers), you can remove the ports
-       - "3307:3306"
+       - "127.0.0.1:3307:3306"
 
     # Volume name in container + location of the data in the container
     volumes:
@@ -34,12 +34,18 @@ services:
 
     image: mongo:8.0
     container_name: readquest-mongodb
+    restart: unless-stopped
 
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
 
-     
+    ports:
+      # Bind to localhost only (security)
+      - "127.0.0.1:27017:27017"
+    
+    volumes:
+      - mongodb_data:/data/db
 
   frontend:
     image: node:20-alpine
@@ -50,7 +56,7 @@ services:
       - "5173:5173"
 
     volumes:
-      - ./frontend/readquest:/app
+      - ./frontend:/app
       - /app/node_modules
 
     environment:
@@ -62,10 +68,11 @@ services:
     restart: unless-stopped
 
     depends_on:
-      db:
+      dbsql:
          condition: service_healthy
 
 volumes:
   # Named Docker volume (default settings) to persist MySQL data
-  mysql_data :
+  mysql_data:
+  mongodb_data:
 
