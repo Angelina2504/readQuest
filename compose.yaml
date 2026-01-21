@@ -17,7 +17,7 @@ services:
     ports:
        # port in the container : port on the PC.
        # If everything stays "in Docker" (Symfony + phpMyAdmin in containers), you can remove the ports
-       - "127.0.0.1:3307:3306"
+       - "127.0.0.1:3309:3306"
 
     # Volume name in container + location of the data in the container
     volumes:
@@ -70,6 +70,45 @@ services:
     depends_on:
       dbsql:
          condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: readquest-backend
+    working_dir: /var/www/html
+
+    volumes:
+      - ./backend:/var/www/html
+
+    environment:
+      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@dbsql:3306/${MYSQL_DATABASE}"
+      MONGODB_URL: "mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@dbmongo:27017"
+      APP_ENV: development
+
+    depends_on:
+      dbsql:
+        condition: service_healthy
+      dbmongo:
+        condition: service_started
+
+    restart: unless-stopped
+
+  nginx:
+      image: nginx:alpine
+      container_name: readquest-nginx
+
+      ports:
+        - "8081:80"
+
+      volumes:
+        - ./backend:/var/www/html
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+      depends_on:
+        - backend
+
+      restart: unless-stopped
 
 volumes:
   # Named Docker volume (default settings) to persist MySQL data
