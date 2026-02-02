@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "pinia": "^3.0.4",
@@ -32,6 +34,17 @@
     "prettier": "3.7.4",
     "vite": "^7.3.0",
     "vite-plugin-vue-devtools": "^8.0.5",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.16",
+    "storybook": "^10.2.3",
+    "@storybook/vue3-vite": "^10.2.3",
+    "@chromatic-com/storybook": "^5.0.0",
+    "@storybook/addon-vitest": "^10.2.3",
+    "@storybook/addon-a11y": "^10.2.3",
+    "@storybook/addon-docs": "^10.2.3",
+    "@storybook/addon-onboarding": "^10.2.3",
+    "eslint-plugin-storybook": "^10.2.3",
+    "playwright": "^1.58.1",
+    "@vitest/browser-playwright": "^4.0.16",
+    "@vitest/coverage-v8": "^4.0.16"
   }
 }

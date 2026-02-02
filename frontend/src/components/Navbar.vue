@@ -45,7 +45,8 @@ display: flex;
 gap: 5rem;
 border: 2px solid #944242;
 padding: 3rem;
-
+corner-shape: superellipse(1);
+border-radius: 100px;
 }
 
 </style>
