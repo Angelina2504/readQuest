@@ -54,7 +54,7 @@ services:
 
     ports:
       - "5173:5173"
-      - "6006:6006" #Storybook
+     # - "6006:6006" #Storybook
 
     volumes:
       - ./frontend:/app
@@ -101,7 +101,7 @@ services:
       container_name: readquest-nginx
 
       ports:
-        - "8081:80"
+        - "8080:80"
 
       volumes:
         - ./backend:/var/www/html

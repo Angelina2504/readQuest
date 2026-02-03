@@ -1,7 +1,7 @@
-# Development tools - NOT used in production
+# Development tools - NOT used in production - DEV
 
 services:
-  # ==================== MONGO EXPRESS (DEV ONLY) ====================
+
   mongo-express:
     image: mongo-express:latest
     container_name: readquest-mongo-express
@@ -22,3 +22,24 @@ services:
     
     depends_on:
       - dbmongo
+
+  storybook:
+    image: node:22-alpine
+    container_name: readquest-storybook
+    working_dir: /app
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    ports:
+      - "6006:6006"
+
+    environment:
+      - NODE_ENV=development
+
+    command: sh -c "npm install && npm run storybook -- -p 6006 -h 0.0.0.0"
+
+    depends_on:
+      - frontend
+    
