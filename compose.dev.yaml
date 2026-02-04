@@ -24,7 +24,7 @@ services:
       - dbmongo
 
   storybook:
-    image: node:22-alpine
+    image: node:20-alpine
     container_name: readquest-storybook
     working_dir: /app
 
@@ -38,8 +38,6 @@ services:
     environment:
       - NODE_ENV=development
 
-    command: sh -c "npm install && npm run storybook -- -p 6006 -h 0.0.0.0"
+    command: sh -c "npm install && npm run storybook"
 
-    depends_on:
-      - frontend
-    
+    restart: unless-stopped
