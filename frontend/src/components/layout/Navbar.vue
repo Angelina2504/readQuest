@@ -59,6 +59,7 @@ const menuItems = reactive([
   { text: 'Notre histoire', path: '/about', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Quêtes', path: '/quests', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Profil', path: '/profil', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
+  { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
 ]);
 </script>
 
