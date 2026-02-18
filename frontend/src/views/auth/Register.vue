@@ -39,7 +39,7 @@ const formData = reactive({
 const formItems = reactive([
     {label:'Identifiant', type:'text', placeholder:'Identifiant', name:'identifiant', required: true, error:'Identifiant déjà utiliser'},
     {label:'Email', type:'email', placeholder:'Email', name:'email', required: true, error:'Email invalide'},
-    {label:'Confirmation email', type:'email', placeholder:'email', name:'confirmEmail', required: true, error:'Les emails ne sont pas iddentique'},
+    {label:'Confirmation email', type:'email', placeholder:'Email', name:'confirmEmail', required: true, error:'Les emails ne sont pas iddentique'},
     {label:'Mot de passe', type:'password', placeholder:'Mot de passe', name:'password', required: true, error:'Mot de passe invalide'},
     {label:'Confirmation mot de passe', type:'password', placeholder:'Confirmation mot de passe', name:'confirmPassword', required: true, error:'Les mots de passe ne sont pas iddentiques'},
 ])
