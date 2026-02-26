@@ -60,9 +60,9 @@ const levelRules = [
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -73,10 +73,10 @@ const levelRules = [
 .modal-container {
   background-color: #F9F5F0;
   width: 90%;
-  max-width: 800px;
-  max-height: 85vh;
-  padding: 40px;
-  border-radius: 8px;
+  max-width: 600px;
+  max-height: 300px;
+  padding: 30px;
+  border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   overflow-y: auto;
   position: relative;
@@ -88,6 +88,7 @@ const levelRules = [
   font-family: serif;
   font-size: 28px;
   margin-bottom: 30px;
+  margin-left: 85px;
   border-bottom: 1px solid #e0dbd5;
   padding-bottom: 15px;
 }
@@ -99,8 +100,9 @@ const levelRules = [
 }
 
 .level-card {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 90px 1fr 20px; 
+  align-items: center;
   gap: 20px;
   padding-bottom: 20px;
   border-bottom: 1px inset #eeeae5;
@@ -117,6 +119,14 @@ const levelRules = [
   filter: sepia(0.4);
 }
 
+.level-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .level-name {
   font-size: 18px;
   font-weight: 600;
@@ -129,7 +139,7 @@ const levelRules = [
   line-height: 1.5;
   color: #333;
   margin: 0;
-  text-align: justify;
+  text-align: center;
 }
 
 .close-button {

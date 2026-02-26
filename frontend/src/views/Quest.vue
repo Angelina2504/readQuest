@@ -1,10 +1,13 @@
 <template>
   <!-- <div class="page-container">
      <button> <LevelRules /> laa</button>
-  </div> -->
+  </div>  -->
+  <BaseModal/>
 </template>
 
 <script setup>
+import BaseModal from '@/components/information/BaseModal.vue';
+
 // import LevelRules from '@/components/information/LevelRules.vue';
 
 </script>
