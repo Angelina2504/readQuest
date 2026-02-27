@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
-    <div class="modal-container">
+  
+    
       <h2 class="modal-main-title">Les Niveaux de Quête</h2>
       
       <div class="levels-grid">
@@ -14,13 +14,10 @@
           </div>
         </div>
       </div>    
-      </div>
-  </div>
+    
 </template>
 
 <script setup>
-
-defineEmits(['close']);
 
 const levelRules = [
   {
@@ -56,31 +53,6 @@ const levelRules = [
 </style>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-}
-
-.modal-container {
-  background-color: #F9F5F0;
-  width: 90%;
-  max-width: 600px;
-  max-height: 300px;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  overflow-y: auto;
-  position: relative;
-}
 
 .modal-main-title {
   text-align: center;

@@ -2,12 +2,16 @@
   <!-- <div class="page-container">
      <button> <LevelRules /> laa</button>
   </div>  -->
-  <BaseModal/>
+
+  <InfoPopup>
+    <LevelRules/>
+  </InfoPopup>
+
 </template>
 
 <script setup>
-import BaseModal from '@/components/information/BaseModal.vue';
-
+import InfoPopup from '@/components/Base/InfoPopup.vue';
+import LevelRules from '@/components/information/LevelRules.vue';
 // import LevelRules from '@/components/information/LevelRules.vue';
 
 </script>
