@@ -16,9 +16,20 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
-        main:
-            lazy: true
-            provider: app_user_provider
+
+        login:
+            pattern: ^/api/auth/login
+            stateless: true
+            json_login:
+                # C'est l'URL que Symfony va "écouter" pour le POST du formulaire JSON
+                check_path: /api/auth/login
+                # Si l'email/password est OK, ce service génère le Token JWT
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                # Si c'est faux, ce service renvoie une erreur 401 propre
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern: ^/api/
             stateless: true
             jwt: ~
 
