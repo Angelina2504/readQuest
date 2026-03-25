@@ -17,13 +17,25 @@
         >
       </div>
 
-      <button type="submit">Se connecter</button>
+      <!-- :disabled : Blocking the button on the first click = sending only one request -->
+      <button type="submit" :disabled="isLoading">Se connecter</button>
+
+      <p v-if="error-message" class="error-message">{{ errorMessage }}</p>
+
     </form>
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import { authService } from '@/services/authService';
+import { useRouter } from 'vue-router';
+
+const isLoading = ref(false)
+
+const router = useRouter();
+
+const errorMessage = ref(null)
 
 const loginData = reactive({
     identifiant: "",
@@ -35,9 +47,20 @@ const loginItems = reactive([
     { label: 'Mot de passe', type: 'password', placeholder: 'Mot de passe', name: 'password', required: true }
 ])
 
-const handleSubmit = () => {
-    
-}
+const handleSubmit = async () => {
+    isLoading.value = true;
+    errorMessage.value = null;
+    try {
+      await authService.login(loginData.identifiant, loginData.password);
+      router.push('/profil');
+    } catch (error) {
+      console.error("Erreur détaillée:", error);
+      errorMessage.value = "Identifiant ou mot de passe incorrect.";
+    } finally {
+      isLoading.value = false;
+    }
+    }
+  
 </script>
 
 <style scoped>
@@ -120,5 +143,11 @@ button {
 button:hover {
   background-color: #944242;
   color: white;
+}
+
+.error-message {
+color: red;
+text-align: center;
+margin-top: 10px;
 }
 </style>

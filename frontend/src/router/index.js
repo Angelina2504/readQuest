@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import Register from '@/views/auth/Register.vue';
 import AboutUs from '@/views/AboutUs.vue';
-import Login from '@/views/auth/Login.vue';
+import Login from '@/views/auth/LoginAuth.vue';
 import Contact from '@/views/ContactUs.vue';
 import Quest from '@/views/Quest.vue';
 import Profil from '@/views/ProfilUSer.vue';
