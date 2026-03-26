@@ -41,11 +41,10 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # Ces routes sont accessibles sans token
-        - { path: ^/api/auth/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
-        # Tout le reste nécessite d'être connecté
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user, roles: ROLE_USER }
+        - { path: ^/api/admin, roles: ROLE_ADMIN }
+       
 
 when@test:
     security:

@@ -1,4 +1,5 @@
 import api from './api';
+import { jwtDecode } from "jwt-decode";
 
 export const authService = {
     async login(email, password) {
@@ -8,10 +9,13 @@ export const authService = {
                 password: password
             });
 
+            const decoded = jwtDecode (response.data.token);
+
             if (response.data.token) {
                 //Save token in localStorage
                 localStorage.setItem('token', response.data.token);
-                console.log('Connexion réussie, token sauvegardé !');
+                localStorage.setItem('user_roles',JSON.stringify(decoded.roles))
+                console.log('Connexion réussie, rôles extraits :', decoded.roles);
             }
             return response.data;
         } catch (error) {
@@ -22,5 +26,15 @@ export const authService = {
 
     logout() {
         localStorage.removeItem('token');
-    }
+        localStorage.removeItem('user_roles');
+    },
+
+    isAdmin() {
+        const roles = JSON.parse(localStorage.getItem('user_roles') || '[]');
+        return roles.includes('ROLE_ADMIN');
+    },
+
+    isAuthenticated() {
+    return !!localStorage.getItem('token');
+}
 };
