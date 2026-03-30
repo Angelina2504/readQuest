@@ -20,7 +20,7 @@
       <!-- :disabled : Blocking the button on the first click = sending only one request -->
       <button type="submit" :disabled="isLoading">Se connecter</button>
 
-      <p v-if="error-message" class="error-message">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
     </form>
   </div>

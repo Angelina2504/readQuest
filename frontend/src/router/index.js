@@ -22,7 +22,7 @@ const routes = [
   { path: '/quests', component: Quest, name:'Quête', meta: {requiresAuth : true}},
 
   //admin
-  { path: '/admin', compoment: AdminView, name:"Admin", meta:{requiresAdmin : true}},
+  { path: '/admin', component: AdminView, name:"Admin", meta:{requiresAdmin : true}},
 ]
 
 const router = createRouter({

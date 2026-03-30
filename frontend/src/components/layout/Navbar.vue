@@ -48,8 +48,8 @@ const props = defineProps({
 });
 
 const icons = {
-  closed: new URL('@/assets/icons/bookclose.png', import.meta.url).href,
-  open: new URL('@/assets/icons/bookopen.png', import.meta.url).href
+  closed: new URL('@/assets/icons/bookClose.png', import.meta.url).href,
+  open: new URL('@/assets/icons/bookOpen.png', import.meta.url).href
 };
 
 const authHover = ref(false);
