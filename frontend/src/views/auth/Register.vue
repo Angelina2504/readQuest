@@ -16,7 +16,9 @@
         :id="form.name"
         :required="form.required"
         v-model="formData[form.name]" 
-         >
+        >
+
+        <span v-if="form.displayError">{{ form.error }}</span>
         </div>
     
         <button type="submit">S'inscrire</button>
@@ -26,7 +28,15 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import { authService } from '@/services/authService';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const isLoading = ref(false)
+
+const errorMessage = ref(null)
 
 const formData = reactive({
     identifiant:"",
@@ -37,16 +47,39 @@ const formData = reactive({
 })
 
 const formItems = reactive([
-    {label:'Identifiant', type:'text', placeholder:'Identifiant', name:'identifiant', required: true, error:'Identifiant déjà utiliser'},
-    {label:'Email', type:'email', placeholder:'Email', name:'email', required: true, error:'Email invalide'},
-    {label:'Confirmation email', type:'email', placeholder:'Email', name:'confirmEmail', required: true, error:'Les emails ne sont pas iddentique'},
-    {label:'Mot de passe', type:'password', placeholder:'Mot de passe', name:'password', required: true, error:'Mot de passe invalide'},
-    {label:'Confirmation mot de passe', type:'password', placeholder:'Confirmation mot de passe', name:'confirmPassword', required: true, error:'Les mots de passe ne sont pas iddentiques'},
+    {label:'Identifiant', type:'text', placeholder:'Identifiant', name:'identifiant', required: true, error:'Identifiant déjà utiliser',displayError: false},
+    {label:'Email', type:'email', placeholder:'Email', name:'email', required: true, error:'Email invalide', displayError: false},
+    {label:'Confirmation email', type:'email', placeholder:'Email', name:'confirmEmail', required: true, error:'Les emails ne sont pas identiques', displayError: false},
+    {label:'Mot de passe', type:'password', placeholder:'Mot de passe', name:'password', required: true, error:'Mot de passe invalide', displayError: false},
+    {label:'Confirmation mot de passe', type:'password', placeholder:'Confirmation mot de passe', name:'confirmPassword', required: true, error:'Les mots de passe ne sont pas identiques', displayError: false},
 ])
 
-const handleSubmit = () => {
-   
+const handleSubmit = async () => {
+  
+  if (formData.email !== formData.confirmEmail) {
+    const itemEmail = formItems.find(item => item.name === 'confirmEmail')
+    itemEmail.displayError = true
+    return
+  }
+  if (formData.password !== formData.confirmPassword) {
+    const itemPassword = formItems.find(item => item.name === 'confirmPassword')
+    itemPassword.displayError = true
+    return
+  }
+
+  try {
+    errorMessage.value = null;
+    isLoading.value = true;
+    await authService.register(formData.identifiant, formData.email, formData.password) ;
+    router.push('/login')
+  } catch (error) {
+    console.error("Erreur détaillée:", error);
+    errorMessage.value = "Identifiant ou mot de passe incorrect.";
+  } finally {
+    isLoading.value = false
+  }
 }
+
 </script>
 
 <style scoped>
