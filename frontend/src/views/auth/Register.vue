@@ -18,7 +18,7 @@
         v-model="formData[form.name]" 
         >
 
-        <span v-if="form.displayError">{{ form.error }}</span>
+        <span class="error-message" v-if="form.displayError">{{ form.error }}</span>
         </div>
     
         <button type="submit">S'inscrire</button>
@@ -55,6 +55,8 @@ const formItems = reactive([
 ])
 
 const handleSubmit = async () => {
+  formItems.forEach(item => {item.displayError = false
+  });
   
   if (formData.email !== formData.confirmEmail) {
     const itemEmail = formItems.find(item => item.name === 'confirmEmail')
@@ -161,5 +163,10 @@ button {
 button:hover {
   background-color: #944242;
   color: white;
+}
+
+.error-message{
+  color: red;
+  padding: 10px 10px 0px 50px ;
 }
 </style>
