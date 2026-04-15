@@ -28,6 +28,10 @@ security:
                 # Si c'est faux, ce service renvoie une erreur 401 propre
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+        register:
+            pattern: ^/api/auth/register
+            stateless: true
+
         api:
             pattern: ^/api/
             stateless: true
