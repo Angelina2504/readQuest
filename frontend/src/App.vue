@@ -1,12 +1,19 @@
 <script setup>
+import { onMounted } from 'vue';
 import Navbar from './components/layout/Navbar.vue';
 import AppFooter from './components/layout/Footer.vue';
+import { useAuthStore } from './stores/authStore';
+
+const authStore = useAuthStore()
+
+onMounted(()=>{ authStore.initAuth()
+})
 
 </script>
 
 <template>
   <div class="app-layout">
-    <Navbar />
+    <Navbar :isAuthenticated="authStore.isAuthenticated" />
     
     <main class="main-content">
       <router-view />

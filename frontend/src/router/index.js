@@ -8,6 +8,7 @@ import Login from '@/views/auth/LoginAuth.vue';
 import Profil from '@/views/ProfilUser.vue';
 import Quest from '@/views/Quest.vue';
 import Register from '@/views/auth/Register.vue';
+import { useAuthStore } from '@/stores/authStore';
 
 const routes = [
   // visitor
@@ -31,8 +32,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isConnected = authService.isAuthenticated();
-  const isAdmin = authService.isAdmin();
+  const authStore = useAuthStore()
+  const isConnected = authStore.isAuthenticated;
+  const isAdmin = authService.isAdmin;
 
   if (to.meta.requiresAdmin) {
     if (isConnected && isAdmin) {

@@ -30,12 +30,12 @@
 import { reactive, ref } from 'vue';
 import { authService } from '@/services/authService';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
 
 const isLoading = ref(false)
-
 const router = useRouter();
-
 const errorMessage = ref(null)
+const authStore = useAuthStore()
 
 const loginData = reactive({
     identifiant: "",
@@ -51,7 +51,8 @@ const handleSubmit = async () => {
     isLoading.value = true;
     errorMessage.value = null;
     try {
-      await authService.login(loginData.identifiant, loginData.password);
+      const result = await authService.login(loginData.identifiant, loginData.password)
+      authStore.login(result.token, result.roles);
       router.push('/profil');
     } catch (error) {
       console.error("Erreur détaillée:", error);

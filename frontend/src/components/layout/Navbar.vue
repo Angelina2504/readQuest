@@ -41,6 +41,11 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore()
+const router = useRouter()
 
 const props = defineProps({
   isAuthenticated: { type: Boolean, default: false },
@@ -62,6 +67,12 @@ const menuItems = reactive([
   { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
   { text: 'Contactez-nous', path: '/contact', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false},
 ]);
+
+function handleLogout() {
+  authStore.logout()
+  router.push('/login')
+}
+
 </script>
 
 <style scoped>
