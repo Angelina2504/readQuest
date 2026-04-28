@@ -11,13 +11,7 @@ export const authService = {
 
             const decoded = jwtDecode (response.data.token);
 
-            if (response.data.token) {
-                //Save token in localStorage
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('user_roles',JSON.stringify(decoded.roles))
-                console.log('Connexion réussie, rôles extraits :', decoded.roles);
-            }
-            return response.data;
+            return { token: response.data.token, roles: decoded.roles }
         } catch (error) {
             console.error('Erreur lors de la connexion :', error.response?.data || error.message);
             throw error;
@@ -40,17 +34,4 @@ export const authService = {
         }
     },
 
-    logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user_roles');
-    },
-
-    isAdmin() {
-        const roles = JSON.parse(localStorage.getItem('user_roles') || '[]');
-        return roles.includes('ROLE_ADMIN');
-    },
-
-    isAuthenticated() {
-    return !!localStorage.getItem('token');
-}
 };

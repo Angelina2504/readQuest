@@ -6,10 +6,10 @@
       </router-link>
     </div>
 
-    <div class="navbar-menu">
+  <div class="navbar-menu"> 
+    <template v-for="item in menuItems":key="item.text">
       <router-link 
-        v-for="item in menuItems" 
-        :key="item.text"
+        v-if="!item.guestOnly || !isAuthenticated"
         :to="item.path"
         class="nav-item"
         @mouseenter="item.isHovered = true"
@@ -22,25 +22,41 @@
         <p>{{ item.text }}</p>
         <span v-if="item.isUser && user" class="user-name">{{ user.name }}</span>
       </router-link>
+    </template>
+  <div
+  class="nav-item"
+  v-if="isAuthenticated"
+    @click="handleLogout"
+    @mouseenter="authHover = true"
+    @mouseleave="authHover = false">
+  <img 
+    :src="authHover ? icons.open : icons.closed" 
+    alt="Auth icon" >
+    <p>Se déconnecter</p>
+</div>
+<router-link v-else
+  to="/login"
+  class="nav-item"
+  @mouseenter="authHover = true"
+  @mouseleave="authHover = false">
+  <img 
+    :src="authHover ? icons.open : icons.closed" 
+    alt="Auth icon" 
+  />
+  <p>Se connecter</p>
+</router-link>
+</div>
 
-      <router-link 
-        :to="isAuthenticated ? '/profil' : '/login'" 
-        class="nav-item"
-        @mouseenter="authHover = true"
-        @mouseleave="authHover = false"
-      >
-        <img 
-          :src="authHover ? icons.open : icons.closed" 
-          alt="Auth icon" 
-        />
-        <p>{{ isAuthenticated ? 'Se déconnecter' : 'Se connecter' }}</p>
-      </router-link>
-    </div>
   </nav>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore()
+const router = useRouter()
 
 const props = defineProps({
   isAuthenticated: { type: Boolean, default: false },
@@ -59,9 +75,15 @@ const menuItems = reactive([
   { text: 'Notre histoire', path: '/about', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Quêtes', path: '/quests', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Profil', path: '/profil', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
-  { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
+  { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true, guestOnly:true },
   { text: 'Contactez-nous', path: '/contact', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false},
 ]);
+
+function handleLogout() {
+  authStore.logout()
+  router.push('/login')
+}
+
 </script>
 
 <style scoped>
