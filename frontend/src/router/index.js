@@ -14,7 +14,7 @@ const routes = [
   { path: '/', component: HomeView, name:'Accueil'},
   { path: '/about', component: AboutUs, name:'Notre histoire'},
   { path: '/contact', component: Contact, name:'Contact'},
-  { path: '/login', component: Login, name:'Se connecter'},
+  { path: '/login', component: Login, name:'Se connecter',  meta: {requiresAuth : false}},
   { path: '/signin', component: Register, name:'Inscription', meta: {requiresAuth : false}},
 
   // user
