@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { authService } from '@/services/authService';
 import AboutUs from '@/views/AboutUs.vue';
 import AdminView from '@/views/adminSystem/AdminView.vue';
 import Contact from '@/views/ContactUs.vue';
@@ -16,7 +15,7 @@ const routes = [
   { path: '/about', component: AboutUs, name:'Notre histoire'},
   { path: '/contact', component: Contact, name:'Contact'},
   { path: '/login', component: Login, name:'Se connecter'},
-  { path: '/signin', component: Register, name:'Inscription'},
+  { path: '/signin', component: Register, name:'Inscription', meta: {requiresAuth : false}},
 
   // user
   { path: '/profil', component: Profil, name:'Profil', meta: {requiresAuth : true}},
@@ -34,7 +33,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const isConnected = authStore.isAuthenticated;
-  const isAdmin = authService.isAdmin;
+  const isAdmin = authStore.isAdmin;
 
   if (to.meta.requiresAdmin) {
     if (isConnected && isAdmin) {
@@ -49,7 +48,10 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: 'Se connecter' });
     }
-  } 
+  }
+  else if (to.meta.requiresAuth === false && isConnected) {
+      next("/profil")
+  }
   else {
     next();
   }
