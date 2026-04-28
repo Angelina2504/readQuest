@@ -19,8 +19,11 @@
         >
 
         <span class="error-message" v-if="form.displayError">{{ form.error }}</span>
+       
         </div>
-    
+
+        <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
+
         <button type="submit">S'inscrire</button>
     </form>
   </div>
@@ -76,7 +79,7 @@ const handleSubmit = async () => {
     router.push('/login')
   } catch (error) {
     console.error("Erreur détaillée:", error);
-    errorMessage.value = "Identifiant ou mot de passe incorrect.";
+    errorMessage.value = "Une erreur est survenue, veuillez réessayer";
   } finally {
     isLoading.value = false
   }
