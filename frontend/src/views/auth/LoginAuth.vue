@@ -43,7 +43,7 @@ const loginData = reactive({
 })
 
 const loginItems = reactive([
-    { label: 'Identifiant', type: 'text', placeholder: 'Identifiant', name: 'identifiant', required: true },
+    { label: 'Identifiant', type: 'text', placeholder: 'Identifiant ou Email', name: 'identifiant', required: true },
     { label: 'Mot de passe', type: 'password', placeholder: 'Mot de passe', name: 'password', required: true }
 ])
 
@@ -52,7 +52,7 @@ const handleSubmit = async () => {
     errorMessage.value = null;
     try {
       const result = await authService.login(loginData.identifiant, loginData.password)
-      authStore.login(result.token, result.roles);
+      authStore.login(result.token);
       router.push('/profil');
     } catch (error) {
       console.error("Erreur détaillée:", error);

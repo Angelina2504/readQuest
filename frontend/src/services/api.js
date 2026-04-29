@@ -1,4 +1,8 @@
 import axios from 'axios';
+import router from '@/router'
+import { useAuthStore } from '@/stores/authStore';
+
+
 
 // instance Axios centralisée
 
@@ -22,6 +26,18 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
     
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            const authStore = useAuthStore()
+            authStore.logout()
+            router.push('/login')
+        }
+    return Promise.reject(error)
+    }
 );
 
 export default api;

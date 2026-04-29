@@ -9,7 +9,7 @@
   <div class="navbar-menu"> 
     <template v-for="item in menuItems":key="item.text">
       <router-link 
-        v-if="!item.guestOnly || !isAuthenticated"
+        v-if="!item.guestOnly || !authStore.isAuthenticated"
         :to="item.path"
         class="nav-item"
         @mouseenter="item.isHovered = true"
@@ -25,7 +25,7 @@
     </template>
   <div
   class="nav-item"
-  v-if="isAuthenticated"
+  v-if="authStore.isAuthenticated"
     @click="handleLogout"
     @mouseenter="authHover = true"
     @mouseleave="authHover = false">
@@ -59,7 +59,6 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const props = defineProps({
-  isAuthenticated: { type: Boolean, default: false },
   user: { type: Object, default: null },
 });
 
