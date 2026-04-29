@@ -25,9 +25,15 @@ class RegistrationController extends AbstractController
         // Extract data from the JSON request body
         $data = json_decode($request->getContent(), true);
         
+        
+        
         if (empty($data['email']) || empty($data['password']) || empty($data['user_alias'])){
             return $this->json(['message' => 'Missing required fields'], 400);
         }
+        
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return $this->json(['message' => 'Invalid email format'], 400);
+            }
 
         if ($existingUser = $this->userRepository->findOneBy(['email'=>$data['email']])){
              return $this->json(['message' => 'Email already in use'], 409);
