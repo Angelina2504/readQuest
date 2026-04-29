@@ -77,10 +77,12 @@ const handleSubmit = async () => {
     isLoading.value = true;
     await authService.register(formData.identifiant, formData.email, formData.password) ;
     router.push('/login')
-  } catch (error) {
-    console.error("Erreur détaillée:", error);
-    errorMessage.value = "Une erreur est survenue, veuillez réessayer";
-  } finally {
+  } catch (error) { 
+    if (error.response?.status === 409){
+      errorMessage.value = "Cette adresse email est déjà utilisée"
+   } else {
+     errorMessage.value = "Une erreur est survenue, veuillez réessayer"
+  }} finally {
     isLoading.value = false
   }
 }

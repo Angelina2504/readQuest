@@ -13,7 +13,7 @@ onMounted(()=>{ authStore.initAuth()
 
 <template>
   <div class="app-layout">
-    <Navbar :isAuthenticated="authStore.isAuthenticated" />
+    <Navbar/>
     
     <main class="main-content">
       <router-view />
