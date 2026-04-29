@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
+import { jwtDecode } from 'jwt-decode'
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
@@ -9,13 +9,16 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => userRoles.value.includes('ROLE_ADMIN'))
 
 
-  function login(newtoken, newUserRoles){
+  function login(newtoken){
+    const decoded = jwtDecode(newtoken)
+    const roles = decoded.roles
+
+    userRoles.value = roles
     isAuthenticated.value = true;
     token.value = newtoken;
-    userRoles.value = newUserRoles;
 
     localStorage.setItem('token', newtoken);
-    localStorage.setItem('user_roles',JSON.stringify(newUserRoles))
+    localStorage.setItem('user_roles',JSON.stringify(roles))
     }
 
   function logout(){
@@ -33,12 +36,22 @@ export const useAuthStore = defineStore('auth', () => {
     const savedToken = localStorage.getItem('token')
     const savedRole = JSON.parse(localStorage.getItem('user_roles') || '[]')
 
-    if (savedToken){
+    if (!savedToken) {
+     return
+    } 
+
+    const decoded = jwtDecode(savedToken)
+    const isExpired = decoded.exp < Date.now() / 1000
+
+    if(isExpired) {
+    logout()
+    return
+    }else{
     isAuthenticated.value = true
     token.value = savedToken
-    userRoles.value = savedRole
-    }
-  }
+    userRoles.value = savedRole 
+    return 
+    }}
 
   return { isAuthenticated, token, userRoles, login, logout, initAuth, isAdmin }
 })

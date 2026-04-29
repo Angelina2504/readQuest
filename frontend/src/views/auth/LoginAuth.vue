@@ -52,7 +52,7 @@ const handleSubmit = async () => {
     errorMessage.value = null;
     try {
       const result = await authService.login(loginData.identifiant, loginData.password)
-      authStore.login(result.token, result.roles);
+      authStore.login(result.token);
       router.push('/profil');
     } catch (error) {
       console.error("Erreur détaillée:", error);
