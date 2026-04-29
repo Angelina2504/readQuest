@@ -9,12 +9,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\UserRepository;
 
 class RegistrationController extends AbstractController
 {
     public function __construct(
         private UserPasswordHasherInterface $hasher,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository
     ) {}
 
     #[Route('/api/auth/register', name: 'api_register', methods: ['POST'])]
@@ -22,6 +24,18 @@ class RegistrationController extends AbstractController
     {
         // Extract data from the JSON request body
         $data = json_decode($request->getContent(), true);
+        
+        if (empty($data['email']) || empty($data['password']) || empty($data['user_alias'])){
+            return $this->json(['message' => 'Missing required fields'], 400);
+        }
+
+        if ($existingUser = $this->userRepository->findOneBy(['email'=>$data['email']])){
+             return $this->json(['message' => 'Email already in use'], 409);
+            } 
+            
+        if ($existingUser = $this->userRepository->findOneBy(['user_alias'=>$data['user_alias']])){
+             return $this->json(['message' => 'Identifiant already in use'], 409);
+            } 
 
         // Create a new User instance
         $user = new User();
@@ -38,5 +52,4 @@ class RegistrationController extends AbstractController
         $this->entityManager->flush();
 
         return $this->json(['message' => 'User created successfully'], 201);
-    }
-}
+    }}
