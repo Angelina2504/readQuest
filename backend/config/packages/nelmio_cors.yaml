@@ -9,4 +9,4 @@ nelmio_cors:
     paths:
         '^/api/':
             allow_origin: ['http://localhost:5173']
-            allow_headers: true
+            allow_headers: ['Content-Type', 'Authorization']
