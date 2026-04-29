@@ -43,7 +43,7 @@ const loginData = reactive({
 })
 
 const loginItems = reactive([
-    { label: 'Identifiant', type: 'text', placeholder: 'Identifiant', name: 'identifiant', required: true },
+    { label: 'Identifiant', type: 'text', placeholder: 'Identifiant ou Email', name: 'identifiant', required: true },
     { label: 'Mot de passe', type: 'password', placeholder: 'Mot de passe', name: 'password', required: true }
 ])
 
