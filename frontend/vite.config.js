@@ -20,6 +20,7 @@ export default defineConfig({
  server: {
     host: true, // Listen on all addresses
     port: 5173,
+    allowedHosts: true,
     watch: {
       usePolling: true // Enable polling for file changes in Docker
     }
