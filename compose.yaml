@@ -86,7 +86,7 @@ services:
     environment:
       DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@dbsql:3306/${MYSQL_DATABASE}"
       MONGODB_URL: "mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@dbmongo:27017"
-      APP_ENV: development
+      APP_ENV: dev
 
     depends_on:
       dbsql:
