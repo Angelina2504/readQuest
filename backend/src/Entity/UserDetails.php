@@ -37,7 +37,7 @@ class UserDetails
         return $this->birthday;
     }
 
-    public function setBirthday(\DateTime $birthday): static
+    public function setBirthday(?\DateTime $birthday): static
     {
         $this->birthday = $birthday;
 
@@ -49,7 +49,7 @@ class UserDetails
         return $this->gender;
     }
 
-    public function setGender(string $gender): static
+    public function setGender(?string $gender): static
     {
         $this->gender = $gender;
 
@@ -61,7 +61,7 @@ class UserDetails
         return $this->avatar;
     }
 
-    public function setAvatar(string $avatar): static
+    public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
 
