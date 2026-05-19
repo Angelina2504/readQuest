@@ -32,7 +32,7 @@ final class UserController extends AbstractController
             return $this->json([
                 'alias'=> $user->getUserAlias(),
                 'email'=> $user->getEmail(),
-                'birthday'=> $userDetails->getBirthday()->format('d/m/Y'),
+                'birthday'=> $userDetails->getBirthday()->format("Y-m-d"),
                 'gender'=> $userDetails->getGender(),
                 'avatar'=> $userDetails->getAvatar(),
             ]);

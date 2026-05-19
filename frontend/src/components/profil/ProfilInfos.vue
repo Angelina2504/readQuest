@@ -18,7 +18,7 @@
         <div class="birthday">
             <span><label for="birthday">Anniversaire</label></span>
             <p v-if="!isEditing">{{birthday}}</p>
-            <input type="text" v-model="birthday" v-else>
+            <input type="date" v-model="birthday" v-else>
              <button class="in-out" @click="birthdayPublic = !birthdayPublic">{{birthdayPublic ? "Public" : "Privé"}}</button>
         </div>
         <div class="gender">
@@ -28,7 +28,7 @@
              <button class="in-out" @click="genderPublic = !genderPublic">{{genderPublic ? "Public" : "Privé"}}</button>
         </div>
 
-        <button class="edit-button" @click="isEditing = !isEditing">
+        <button class="edit-button" @click="isEditing ? handleSave() : isEditing = true">
         {{ isEditing ? 'Enregistrer' : 'Modifier' }} </button>
     </div>
 </template>
@@ -38,6 +38,7 @@ import { ref, onMounted } from 'vue';
 import { profilService } from '@/services/profilService';
 
 const errorMessage = ref(null)
+const isLoading = ref(false)
 
 const isEditing = ref(false)
 const alias = ref('')
@@ -65,6 +66,20 @@ onMounted(async () => {
     errorMessage.value = "Data non chargées";
   }
 })
+
+const handleSave = async() => {
+  isLoading.value = true;
+  errorMessage.value = null;
+    try {
+      const result = await profilService.updateProfile(birthday.value,gender.value,avatar.value)
+      isEditing.value = false;
+    } catch (error) {
+      console.error("Erreur détaillée:", error);
+      errorMessage.value = "Modification non enregistrer";
+    } finally {
+      isLoading.value = false;
+    }
+    }
 
 </script>
 
