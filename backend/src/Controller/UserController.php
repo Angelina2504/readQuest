@@ -55,12 +55,12 @@ final class UserController extends AbstractController
         $userDetails = $user->getUserDetails();
         $userDetails->setBirthday(new \DateTime($data['birthday']));
         $userDetails->setGender($data['gender']);
-        $userDetails->setAvatar($data['avatar']);
+        
     }else{
         $userDetails = new UserDetails();
         $userDetails->setBirthday(new \DateTime($data['birthday']));
         $userDetails->setGender($data['gender']);
-        $userDetails->setAvatar($data['avatar']);
+        
     }
      
     $userDetails->setUser($user);
@@ -76,15 +76,29 @@ final class UserController extends AbstractController
     {
         $user = $this->getUser();
         $file = $request->files->get('avatar');
+
+        if ($file->getSize() > 2 * 1024 * 1024) {
+            return $this->json(['message' => 'File too large, max 2MB'], 400);
+        }
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($file->getMimeType(), $allowedTypes)) {
+            return $this->json(['message' => 'Invalid file type'], 400);
+        }
+
+        $userDetails = $user->getUserDetails();
+
+        if (!$userDetails) {
+            return $this->json(['message' => 'No UserDetails found'], 404);
+        }
+
         $nomFichier = uniqid() . '.' . $file->getClientOriginalExtension();
         $file->move($this->getParameter('kernel.project_dir') . '/public/uploads/avatars/', $nomFichier);
-        $userDetails = $user->getUserDetails();
-         $userDetails->setAvatar('uploads/avatars/' . $nomFichier);
+        $userDetails->setAvatar('uploads/avatars/' . $nomFichier);
 
         $this->entityManager->persist($userDetails);
         $this->entityManager->flush();
 
-    return $this->json(['message' => 'Avatar update']);   
-
+        return $this->json(['message' => 'Avatar update']);
     }
 }

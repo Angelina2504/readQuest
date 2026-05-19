@@ -1,7 +1,8 @@
 <template>
     <div class="id-card">
         <div class="photo profil">
-            <img :src="avatar" alt="photos de profil">
+          <img :src="avatar || 'https://placehold.co/100x100'" alt="photos de profil">
+          <input type="file" v-if="isEditing" @change="handleAvatarChange">
         </div>
         <div class="alias">
             <span><label for="Identifiant">Identifiant</label></span>
@@ -72,7 +73,7 @@ const handleSave = async() => {
   isLoading.value = true;
   errorMessage.value = null;
     try {
-      await profilService.updateProfile(birthday.value,gender.value,avatar.value)
+      await profilService.updateProfile(birthday.value,gender.value)
       isEditing.value = false;
     } catch (error) {
       console.error("Erreur détaillée:", error);
@@ -81,6 +82,24 @@ const handleSave = async() => {
       isLoading.value = false;
     }
     }
+
+const handleAvatarChange = async(event) => {
+  isLoading.value = true;
+  errorMessage.value = null;
+  try {
+    const fichier = event.target.files[0]
+    const formData = new FormData()
+    formData.append('avatar', fichier)
+    await profilService.uploadAvatar(formData)
+    const result = await profilService.getProfil()
+    avatar.value = result.avatar ? 'http://localhost:8080/' + result.avatar : null
+  } catch (error) {
+    console.error("Erreur détaillée:", error);
+    errorMessage.value = "Modification non enregistrer";
+  } finally {
+      isLoading.value = false;
+  }
+  }
 
 </script>
 
