@@ -34,18 +34,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { profilService } from '@/services/profilService';
+
+const errorMessage = ref(null)
 
 const isEditing = ref(false)
-const alias = ref('Toto')
-const email = ref('toto@toto.fr')
-const birthday = ref('25/04/1992')
-const gender = ref('Homme')
+const alias = ref('')
+const email = ref('')
+const birthday = ref('')
+const gender = ref('')
+const avatar = ref(null)
 
 const aliasPublic = ref(false)
 const emailPublic = ref(false)
 const birthdayPublic = ref(false)
 const genderPublic = ref(false)
+
+onMounted(async () => {
+  try {
+    const result = await profilService.getProfil()
+    birthday.value = result.birthday
+    gender.value = result.gender
+    avatar.value = result.avatar
+    alias.value = result.alias
+    email.value = result.email
+
+  } catch (error) {
+    console.error("Erreur détaillée:", error);
+    errorMessage.value = "Data non chargées";
+  }
+})
 
 </script>
 

@@ -2,7 +2,7 @@ import api from './api';
 
 export const profilService = {
     async getProfil(){
-        try {const response = await api.get('/api/user/profile', {
+        try {const response = await api.get('/user/profile', {
             });
         return response.data
         } catch (error) {
@@ -12,7 +12,7 @@ export const profilService = {
     },
 
     async updateProfile(birthday, gender,avatar){
-        try {const response = await api.patch('/api/user/profile',{
+        try {const response = await api.patch('/user/profile',{
                birthday : birthday,
                gender: gender,
                avatar: avatar
