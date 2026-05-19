@@ -1,7 +1,7 @@
 <template>
     <div class="id-card">
         <div class="photo profil">
-            <img src="https://placehold.co/100x100" alt="photos de profil">
+            <img :src="avatar" alt="photos de profil">
         </div>
         <div class="alias">
             <span><label for="Identifiant">Identifiant</label></span>
@@ -57,7 +57,8 @@ onMounted(async () => {
     const result = await profilService.getProfil()
     birthday.value = result.birthday
     gender.value = result.gender
-    avatar.value = result.avatar
+    avatar.value = result.avatar ? 'http://localhost:8080/' + result.avatar : null
+    console.log(avatar.value)
     alias.value = result.alias
     email.value = result.email
 
@@ -71,7 +72,7 @@ const handleSave = async() => {
   isLoading.value = true;
   errorMessage.value = null;
     try {
-      const result = await profilService.updateProfile(birthday.value,gender.value,avatar.value)
+      await profilService.updateProfile(birthday.value,gender.value,avatar.value)
       isEditing.value = false;
     } catch (error) {
       console.error("Erreur détaillée:", error);

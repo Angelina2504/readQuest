@@ -69,6 +69,22 @@ final class UserController extends AbstractController
     $this->entityManager->flush();
 
     return $this->json(['message' => 'UserDetails created successfully'], 201);
+    }
+
+    #[Route('/api/user/avatar', name: 'app_user_avatar', methods: ['POST'])]
+    public function postavatar(Request $request): JsonResponse
+    {
+        $user = $this->getUser();
+        $file = $request->files->get('avatar');
+        $nomFichier = uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($this->getParameter('kernel.project_dir') . '/public/uploads/avatars/', $nomFichier);
+        $userDetails = $user->getUserDetails();
+         $userDetails->setAvatar('uploads/avatars/' . $nomFichier);
+
+        $this->entityManager->persist($userDetails);
+        $this->entityManager->flush();
+
+    return $this->json(['message' => 'Avatar update']);   
 
     }
 }
