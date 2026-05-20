@@ -55,12 +55,15 @@ final class UserController extends AbstractController
         $userDetails = $user->getUserDetails();
         $userDetails->setBirthday(new \DateTime($data['birthday']));
         $userDetails->setGender($data['gender']);
+        $user->setUserAlias($data['alias']);
+        $user->setEmail($data['email']);
         
     }else{
         $userDetails = new UserDetails();
         $userDetails->setBirthday(new \DateTime($data['birthday']));
         $userDetails->setGender($data['gender']);
-        
+        $user->setUserAlias($data['alias']);
+        $user->setEmail($data['email']);
     }
      
     $userDetails->setUser($user);
@@ -72,7 +75,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/api/user/avatar', name: 'app_user_avatar', methods: ['POST'])]
-    public function postavatar(Request $request): JsonResponse
+    public function postAvatar(Request $request): JsonResponse
     {
         $user = $this->getUser();
         $file = $request->files->get('avatar');
@@ -97,7 +100,7 @@ final class UserController extends AbstractController
             return $this->json(['message' => 'No UserDetails found'], 404);
         }
 
-        $nomFichier = uniqid() . '.' . $file->getClientOriginalExtension();
+        $nomFichier = bin2hex(random_bytes(16)) . '.' . $file->getClientOriginalExtension();
         $file->move($this->getParameter('kernel.project_dir') . '/public/uploads/avatars/', $nomFichier);
         $userDetails->setAvatar('uploads/avatars/' . $nomFichier);
 

@@ -1,5 +1,8 @@
 <template>
     <div class="id-card">
+
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
         <div class="photo profil">
           <img :src="avatar || 'https://placehold.co/100x100'" alt="photos de profil">
           <input type="file" v-if="isEditing" @change="handleAvatarChange">
@@ -29,7 +32,7 @@
              <button class="in-out" @click="genderPublic = !genderPublic">{{genderPublic ? "Public" : "Privé"}}</button>
         </div>
 
-        <button class="edit-button" @click="isEditing ? handleSave() : isEditing = true">
+        <button class="edit-button" @click="isEditing ? handleSave() : isEditing = true" :disabled="isLoading">
         {{ isEditing ? 'Enregistrer' : 'Modifier' }} </button>
     </div>
 </template>
@@ -72,7 +75,7 @@ const handleSave = async() => {
   isLoading.value = true;
   errorMessage.value = null;
     try {
-      await profilService.updateProfile(birthday.value,gender.value)
+      await profilService.updateProfile(birthday.value,gender.value,alias.value,email.value)
       isEditing.value = false;
     } catch (error) {
       console.error("Erreur détaillée:", error);
@@ -195,5 +198,11 @@ p {
 .in-out:hover {
   background-color: #944242;
   color: white;
+}
+
+.error {
+  color: #944242;
+  font-size: 13px;
+  text-align: center;
 }
 </style>

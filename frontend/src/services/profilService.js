@@ -11,10 +11,12 @@ export const profilService = {
         }
     },
 
-    async updateProfile(birthday, gender){
+    async updateProfile(birthday, gender, alias, email){
         try {const response = await api.patch('/user/profile',{
                birthday : birthday,
                gender: gender,
+               alias: alias,
+               email: email
             });
             return response.data
         } catch (error) {
