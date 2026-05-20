@@ -32,7 +32,7 @@ final class UserController extends AbstractController
             return $this->json([
                 'alias'=> $user->getUserAlias(),
                 'email'=> $user->getEmail(),
-                'birthday'=> $userDetails->getBirthday()->format("Y-m-d"),
+                'birthday'=> $userDetails->getBirthday()?->format("Y-m-d"),
                 'gender'=> $userDetails->getGender(),
                 'avatar'=> $userDetails->getAvatar(),
             ]);
@@ -76,11 +76,16 @@ final class UserController extends AbstractController
     {
         $user = $this->getUser();
         $file = $request->files->get('avatar');
+        
+        if (!$file) {
+            return $this->json(['message' => 'No file provided'], 400);
+        }
 
         if ($file->getSize() > 2 * 1024 * 1024) {
             return $this->json(['message' => 'File too large, max 2MB'], 400);
         }
 
+        
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!in_array($file->getMimeType(), $allowedTypes)) {
             return $this->json(['message' => 'Invalid file type'], 400);
