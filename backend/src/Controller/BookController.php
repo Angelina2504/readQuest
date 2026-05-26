@@ -6,13 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\HttpClientInterface; 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\BookRepository;
+use App\Entity\Book;
+use App\Entity\Reading;
 
 final class BookController extends AbstractController
 {
 
     public function __construct(
     private HttpClientInterface $httpClient,
+    private BookRepository $bookRepository,
+    private EntityManagerInterface $entityManager,
     ) {}
 
     #[Route('/api/books/search', name: 'app_books_search', methods: ['GET'])]
@@ -50,4 +56,40 @@ final class BookController extends AbstractController
 
         return $this->json($books);
     }
+    #[Route('/api/books/add', name: 'app_books_add', methods: ['POST'])]
+    public function addBooks (Request $request): JsonResponse
+    {  
+        $data = json_decode($request->getContent(), true);
+        $user = $this->getUser();
+
+        if($user == null){
+            return $this->json(['message' => 'Unauthorized'], 401);
+        }
+        $book = $this->bookRepository->findOneBy(['book_isbn' => $data['book_isbn']]);
+
+        if($book === null){
+            $book = new Book();
+            $book->setBookName($data['book_name']);
+            $book->setBookIsbn($data['book_isbn']);
+            $book->setBookPublication($data['book_publication']);
+            $book->setBookPage($data['book_page']);
+            $book->setBookDescription($data['book_description']);
+            $book->setBookLanguage($data['book_language']);
+            $book->setBookCover($data['book_cover']);
+        }
+        $this->entityManager->persist($book);
+        $this->entityManager->flush();
+
+        $reading = new Reading();
+        $reading->setReadingStatus($data['reading_status']);
+        $reading->setUser($user);
+        $reading->setBook($book);
+
+        $this->entityManager->persist($reading);
+        $this->entityManager->flush();
+
+        return $this->json(['message' => 'Book created successfully'], 201);
+        
+    }
+
 }
