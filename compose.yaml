@@ -6,7 +6,8 @@ services:
     image: mysql:8.4
     container_name: readquest-mysql
     restart: unless-stopped
-
+    command: --mysql-native-password=ON
+    
     # send environment variables to the container
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -84,7 +85,7 @@ services:
       - ./backend:/var/www/html
 
     environment:
-      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@dbsql:3306/${MYSQL_DATABASE}"
+      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@dbsql:3306/${MYSQL_DATABASE}?serverVersion=8.4&charset=utf8mb4"
       MONGODB_URL: "mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@dbmongo:27017"
       APP_ENV: dev
 
