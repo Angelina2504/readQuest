@@ -7,6 +7,7 @@ import Login from '@/views/auth/LoginAuth.vue';
 import Profil from '@/views/ProfilUser.vue';
 import Quest from '@/views/Quest.vue';
 import Register from '@/views/auth/Register.vue';
+import Bibliotheque from '@/views/BibliothequeView.vue'
 import { useAuthStore } from '@/stores/authStore';
 
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
   // user
   { path: '/profil', component: Profil, name:'Profil', meta: {requiresAuth : true}},
   { path: '/quests', component: Quest, name:'Quête', meta: {requiresAuth : true}},
+  { path: '/bibliotheque', component: Bibliotheque, name:'Bibliotheque', meta: {requiresAuth : true}},
 
   //admin
   { path: '/admin', component: AdminView, name:"Admin", meta:{requiresAdmin : true}},

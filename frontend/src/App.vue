@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
-import Navbar from './components/layout/Navbar.vue';
+import Navbar from './components/layout/NavBar.vue';
 import AppFooter from './components/layout/Footer.vue';
 import { useAuthStore } from './stores/authStore';
 
