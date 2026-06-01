@@ -1,13 +1,17 @@
 <template>
     <main class="main-content">
-      <BibliothequeSearch />
-      <BibliothequeList />
+      <BibliothequeSearch @bookAdded="refreshList" />
+      <BibliothequeList :key="listKey" />
     </main>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import BibliothequeSearch from '@/components/bibliotheque/BibliothequeSearch.vue';
 import BibliothequeList from '@/components/bibliotheque/BibliothequeList.vue';
+
+const listKey = ref(0)
+const refreshList = () => listKey.value++
 
 </script>
 

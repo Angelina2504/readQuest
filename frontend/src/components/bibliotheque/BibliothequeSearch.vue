@@ -24,6 +24,7 @@ const search = ref('');
 const results = ref([]);
 const errorMessage = ref(null);
 const successMessage = ref(null);
+const emit = defineEmits(['bookAdded'])
 
 const handleSearch = async () => {
     try {
@@ -38,6 +39,7 @@ const handleAdd = async (book) => {
     try {
         await bibliothequeService.addBook({ ...book,reading_status: 'a_lire'});
         successMessage.value="Livre ajouté à votre bibliothèque";
+        emit('bookAdded')
     } catch (error) {
         console.error("Erreur détaillée:", error);
         errorMessage.value = "Modification non enregistrer";
