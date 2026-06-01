@@ -12,6 +12,7 @@
                   <option value="en_cours">En cours</option>
                   <option value="lu">Lu</option>
                 </select>
+                <button @click="deleteBook(book.reading_id)">Supprimer</button>
             </div>
         </div>
     </div>
@@ -39,6 +40,16 @@ onMounted(async () => {
     errorMessage.value = "Data non chargées";
   }
 })
+
+const deleteBook = async(id) => {
+  try {
+    await bibliothequeService.deleteReading(id)
+    library.value = library.value.filter(b => b.reading_id !== id)
+  } catch (error) {
+     console.error("Erreur détaillée:", error);
+    errorMessage.value = "Data non chargées";
+  }
+}
 
 </script>
 
@@ -110,5 +121,34 @@ onMounted(async () => {
   background-color: #944242;
   border-radius: 25px;
   padding: 4px 12px;
+}
+
+button {
+  padding: 6px 16px;
+  background-color: white;
+  border: 2px solid #b0413e;
+  border-radius: 25px;
+  color: #b0413e;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #b0413e;
+  color: white;
+}
+
+select {
+  padding: 4px 12px;
+  border: 2px solid #944242;
+  border-radius: 25px;
+  color: #944242;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
 }
 </style>
