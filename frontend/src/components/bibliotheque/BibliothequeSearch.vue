@@ -45,9 +45,8 @@ const handleAdd = async (book) => {
 
 <style scoped>
 .search-wrapper {
-  padding: 40px 20px;
+  padding: 40px 20px 16px;
   background-color: #FDF8F3;
-  min-height: 60vh;
 }
 
 .search-bar {

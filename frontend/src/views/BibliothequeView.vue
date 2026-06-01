@@ -12,5 +12,11 @@ import BibliothequeList from '@/components/bibliotheque/BibliothequeList.vue';
 </script>
 
 <style scoped>
-
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: #FDF8F3;
+  min-height: 100vh;
+}
 </style>
