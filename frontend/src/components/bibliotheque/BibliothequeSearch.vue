@@ -1,10 +1,11 @@
 <template>
 <div class="search-wrapper">
     <div class="search-bar">
+        
         <input type="text" name="search" v-model="search" placeholder="Rechercher un livre...">
         <button class="btn-search" @click="handleSearch">Rechercher</button>
     </div>
-
+      <p v-if="successMessage" class="success">{{ successMessage }}</p>
     <div class="results-grid">
         <div class="book-card" v-for="book in results" :key="book.book_isbn">
             <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" />
@@ -22,6 +23,7 @@ import { bibliothequeService } from '@/services/bibliothequeService';
 const search = ref('');
 const results = ref([]);
 const errorMessage = ref(null);
+const successMessage = ref(null);
 
 const handleSearch = async () => {
     try {
@@ -34,7 +36,8 @@ const handleSearch = async () => {
 
 const handleAdd = async (book) => {
     try {
-        await bibliothequeService.addBook({ ...book,reading_status: 'a_lire'})
+        await bibliothequeService.addBook({ ...book,reading_status: 'a_lire'});
+        successMessage.value="Livre ajouté à votre bibliothèque";
     } catch (error) {
         console.error("Erreur détaillée:", error);
         errorMessage.value = "Modification non enregistrer";
@@ -141,5 +144,12 @@ const handleAdd = async (book) => {
 .btn-add:hover {
   background-color: #944242;
   color: white;
+}
+
+.success {
+  color: #4f805d;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
 }
 </style>
