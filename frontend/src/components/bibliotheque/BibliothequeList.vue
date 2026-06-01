@@ -1,8 +1,15 @@
 <template>
-    <div v-for="book in library" :key="book.book_isbn">
-        <img :src="book.book_cover" :alt="book.book_name" />
-        <p>{{ book.book_name }}</p>
-        <p>{{ book.reading_status }}</p>
+    <div class="library-wrapper">
+        <h2 class="library-title">Ma bibliothèque</h2>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <p v-if="library.length === 0" class="empty">Aucun livre dans votre bibliothèque.</p>
+        <div class="library-grid">
+            <div class="book-card" v-for="book in library" :key="book.book_isbn">
+                <img :src="book.book_cover" :alt="book.book_name" />
+                <p class="book-title">{{ book.book_name }}</p>
+                <span class="book-status">{{ book.reading_status }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -25,5 +32,72 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.library-wrapper {
+  padding: 16px 20px 40px;
+  background-color: #FDF8F3;
+}
 
+.library-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #944242;
+  margin-bottom: 24px;
+}
+
+.empty {
+  color: #999;
+  font-size: 14px;
+}
+
+.error {
+  color: #b0413e;
+  font-size: 14px;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: white;
+  border: 2px solid #EDE4D3;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease;
+}
+
+.book-card:hover {
+  border-color: #944242;
+}
+
+.book-card img {
+  width: 100%;
+  max-width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.book-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.book-status {
+  font-size: 12px;
+  color: white;
+  background-color: #944242;
+  border-radius: 25px;
+  padding: 4px 12px;
+}
 </style>
