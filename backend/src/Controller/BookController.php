@@ -73,7 +73,7 @@ final class BookController extends AbstractController
             $book = new Book();
             $book->setBookName($data['book_name']);
             $book->setBookIsbn($data['book_isbn']);
-            $book->setBookPublication($data['book_publication']);
+            $book->setBookPublication(substr($data['book_publication'] ?? '', 0, 20));
             $book->setBookPage($data['book_page']);
             $book->setBookDescription($data['book_description']);
             $book->setBookLanguage($data['book_language']);

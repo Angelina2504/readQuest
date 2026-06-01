@@ -22,7 +22,7 @@ class Book
     #[ORM\Column(length: 13)]
     private ?string $book_isbn = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
+    #[ORM\Column(length: 20, nullable: true)]
     private ?string $book_publication = null;
 
     #[ORM\Column]
