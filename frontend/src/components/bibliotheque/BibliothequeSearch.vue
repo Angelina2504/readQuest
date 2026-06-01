@@ -7,7 +7,7 @@
 
     <div class="results-grid">
         <div class="book-card" v-for="book in results" :key="book.book_isbn">
-            <img :src="book.book_cover" :alt="book.book_name" />
+            <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" />
             <p>{{ book.book_name }}</p>
             <button class="btn-add" @click="handleAdd(book)">Ajouter</button>
         </div>

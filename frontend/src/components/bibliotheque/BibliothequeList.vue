@@ -5,9 +5,13 @@
         <p v-if="library.length === 0" class="empty">Aucun livre dans votre bibliothèque.</p>
         <div class="library-grid">
             <div class="book-card" v-for="book in library" :key="book.book_isbn">
-                <img :src="book.book_cover" :alt="book.book_name" />
+                <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" />
                 <p class="book-title">{{ book.book_name }}</p>
-                <span class="book-status">{{ book.reading_status }}</span>
+                <select v-model="book.reading_status" @change="updateStatus(book)">
+                  <option value="a_lire">À lire</option>
+                  <option value="en_cours">En cours</option>
+                  <option value="lu">Lu</option>
+                </select>
             </div>
         </div>
     </div>
@@ -19,6 +23,13 @@ import { onMounted, ref } from 'vue';
 
 const errorMessage = ref(null)
 const library = ref([]);
+const updateStatus = async (book) => {
+    try {
+        await bibliothequeService.updateReading(book.reading_id, book.reading_status)
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
 
 onMounted(async () => {
   try {

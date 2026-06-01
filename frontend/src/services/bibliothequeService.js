@@ -27,6 +27,16 @@ export const bibliothequeService = {
             console.error('Erreur lors de l\'obtention du livre :', error.response?.data || error.message);
             throw error; 
         }
+    },
+
+    async updateReading(id, status){
+        try {
+            const response = await api.patch(`/library/${id}`, {reading_status: status})
+            return response.data
+        } catch (error) {
+            console.error('Erreur lors de la mise à jours du statut :', error.response?.data || error.message);
+            throw error; 
+        }
     }
 
 }
