@@ -112,4 +112,35 @@ final class BookController extends AbstractController
         return $this->json($library);
     }
 
+    #[Route('/api/library/{id}', name: 'app_library_statut', methods: ['PATCH'])]
+    public function patchStatut(int $id, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $reading = $this->readingRepository->findOneBy(['id'=>$id]);
+
+        if($reading === null){
+            return $this->json(['message' => 'Reading not found'], 404);
+        }
+           $reading->setReadingStatus($data['reading_status']);
+        
+        $this->entityManager->flush();
+
+        return $this->json(['message' => 'Statut update'], 200);
+    }
+
+     #[Route('/api/library/{id}', name: 'app_library_delete', methods: ['DELETE'])]
+    public function deleteReading(int $id): JsonResponse
+    {
+        $reading = $this->readingRepository->findOneBy(['id'=>$id]);
+
+         if($reading === null){
+            return $this->json(['message' => 'Reading not found'], 404);
+        }
+
+        $this->entityManager->remove($reading);
+
+        $this->entityManager->flush();
+
+        return $this->json(['message' => 'Book Delete'], 200);
+    }
 }
