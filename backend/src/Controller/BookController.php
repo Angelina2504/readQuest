@@ -81,12 +81,19 @@ final class BookController extends AbstractController
         }
         $this->entityManager->persist($book);
         $this->entityManager->flush();
+        
+        $existingReading=$this->readingRepository->findOneBy(['user' => $user, 'book' => $book]);
+
+        if($existingReading !== null){
+            return $this->json(['message' => 'Book or reading already in database'], 200);
+        
+        }
 
         $reading = new Reading();
         $reading->setReadingStatus($data['reading_status']);
         $reading->setUser($user);
         $reading->setBook($book);
-
+        
         $this->entityManager->persist($reading);
         $this->entityManager->flush();
 
