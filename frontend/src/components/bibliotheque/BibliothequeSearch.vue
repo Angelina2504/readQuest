@@ -22,16 +22,15 @@ import { bibliothequeService } from '@/services/bibliothequeService';
 
 const search = ref('');
 const results = ref([]);
-const errorMessage = ref(null);
 const successMessage = ref(null);
 const emit = defineEmits(['bookAdded'])
 
 const handleSearch = async () => {
     try {
        results.value = await bibliothequeService.searchBooks(search.value)
+       successMessage.value = null
     } catch (error) {
-        console.error("Erreur détaillée:", error);
-        errorMessage.value = "Modification non enregistrer";
+        console.error("Erreur lors de la recherche de livres", error);
     }
 }
 
@@ -41,8 +40,7 @@ const handleAdd = async (book) => {
         successMessage.value="Livre ajouté à votre bibliothèque";
         emit('bookAdded')
     } catch (error) {
-        console.error("Erreur détaillée:", error);
-        errorMessage.value = "Modification non enregistrer";
+        console.error("Erreur lors de l'ajout du livre", error);
     }
 }
 

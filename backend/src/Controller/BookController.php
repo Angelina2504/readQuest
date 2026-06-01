@@ -64,7 +64,7 @@ final class BookController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $user = $this->getUser();
 
-        if($user == null){
+        if($user === null){
             return $this->json(['message' => 'Unauthorized'], 401);
         }
         $book = $this->bookRepository->findOneBy(['book_isbn' => $data['book_isbn']]);
