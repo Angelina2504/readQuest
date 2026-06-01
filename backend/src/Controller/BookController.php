@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BookRepository;
+use App\Repository\ReadingRepository;
 use App\Entity\Book;
 use App\Entity\Reading;
 
@@ -19,6 +20,7 @@ final class BookController extends AbstractController
     private HttpClientInterface $httpClient,
     private BookRepository $bookRepository,
     private EntityManagerInterface $entityManager,
+    private ReadingRepository $readingRepository,
     ) {}
 
     #[Route('/api/books/search', name: 'app_books_search', methods: ['GET'])]
@@ -90,6 +92,24 @@ final class BookController extends AbstractController
 
         return $this->json(['message' => 'Book created successfully'], 201);
         
+    }
+    #[Route('/api/books/library', name: 'app_books_library', methods: ['GET'])]
+    public function getLibrary (): JsonResponse
+    {
+        $user = $this->getUser();
+        $readings = $this->readingRepository->findBy(['user' => $user]);    
+        $library = [];
+
+        foreach ($readings as $reading) {
+            $library[] = [
+                'reading_id' => $reading->getId(),
+                'reading_status' => $reading->getReadingStatus(),
+                'book_name' => $reading->getBook()->getBookName(),
+                'book_cover' => $reading->getBook()->getBookCover(),
+                'book_isbn' => $reading->getBook()->getBookIsbn(),
+            ];
+        }
+        return $this->json($library);
     }
 
 }
