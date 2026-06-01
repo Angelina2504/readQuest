@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,6 +38,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserDetails $userDetails = null;
+
+    /**
+     * @var Collection<int, Reading>
+     */
+    #[ORM\OneToMany(targetEntity: Reading::class, mappedBy: 'user')]
+    private Collection $readings;
+
+    public function __construct()
+    {
+        $this->readings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -143,6 +156,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->userDetails = $userDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reading>
+     */
+    public function getReadings(): Collection
+    {
+        return $this->readings;
+    }
+
+    public function addReading(Reading $reading): static
+    {
+        if (!$this->readings->contains($reading)) {
+            $this->readings->add($reading);
+            $reading->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReading(Reading $reading): static
+    {
+        if ($this->readings->removeElement($reading)) {
+            // set the owning side to null (unless already changed)
+            if ($reading->getUser() === $this) {
+                $reading->setUser(null);
+            }
+        }
 
         return $this;
     }

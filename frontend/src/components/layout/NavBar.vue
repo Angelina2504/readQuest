@@ -7,9 +7,11 @@
     </div>
 
   <div class="navbar-menu"> 
-    <template v-for="item in menuItems":key="item.text">
+    <template 
+        v-for="item in menuItems" 
+        :key="item.text">
       <router-link 
-        v-if="!item.guestOnly || !authStore.isAuthenticated"
+        v-if="(!item.guestOnly || !authStore.isAuthenticated) && (!item.requiresAuth || authStore.isAuthenticated)"
         :to="item.path"
         class="nav-item"
         @mouseenter="item.isHovered = true"
@@ -20,7 +22,6 @@
           :alt="item.text" 
         />
         <p>{{ item.text }}</p>
-        <span v-if="item.isUser && user" class="user-name">{{ user.name }}</span>
       </router-link>
     </template>
   <div
@@ -58,10 +59,6 @@ import { useRouter } from 'vue-router';
 const authStore = useAuthStore()
 const router = useRouter()
 
-const props = defineProps({
-  user: { type: Object, default: null },
-});
-
 const icons = {
   closed: new URL('@/assets/icons/bookClose.png', import.meta.url).href,
   open: new URL('@/assets/icons/bookOpen.png', import.meta.url).href
@@ -73,8 +70,9 @@ const menuItems = reactive([
   { text: 'Accueil', path: '/', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Notre histoire', path: '/about', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Quêtes', path: '/quests', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
-  { text: 'Profil', path: '/profil', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true },
-  { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, isUser: true, guestOnly:true },
+  { text: 'Ma Bibliothèque', path: '/bibliotheque', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, requiresAuth: true},
+  { text: 'Profil', path: '/profil', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false},
+  { text: 'Inscription', path: '/signin', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false, guestOnly:true },
   { text: 'Contactez-nous', path: '/contact', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false},
 ]);
 
