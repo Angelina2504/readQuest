@@ -22,7 +22,6 @@ security:
             json_login:
                 # C'est l'URL que Symfony va "écouter" pour le POST du formulaire JSON
                 check_path: /api/auth/login
-                username_path: email
                 # Si l'email/password est OK, ce service génère le Token JWT
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 # Si c'est faux, ce service renvoie une erreur 401 propre
@@ -48,6 +47,8 @@ security:
         - { path: ^/api/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api/user, roles: ROLE_USER }
         - { path: ^/api/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/books, roles: ROLE_USER }
+        - { path: ^/api/library, roles: ROLE_USER }
        
 
 when@test:
