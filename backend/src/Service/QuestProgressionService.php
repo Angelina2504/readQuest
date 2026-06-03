@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Service;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ParticipationRepository;
+use App\Repository\ReadingRepository;
+
+class QuestProgressionService
+{
+    public function __construct(
+
+    private EntityManagerInterface $entityManager,
+    private ParticipationRepository $participationRepository,
+    private ReadingRepository $readingRepository,
+    ) {}
+
+    public function updateProgression($user): void
+    {
+        $participations = $this->participationRepository->findBy(['user' => $user, 'particip_statut' => 'en_cours']);
+
+        foreach ($participations as $participation) {
+            $quest = $participation->getQuest();
+            $startDate = $participation->getParticipStartDate();
+            $criteriaType = $quest->getQuestCriteriaType();
+            $criteriaValue = $quest->getQuestCriteriaValue();
+            $target = $quest->getQuestCriteriaTarget();
+
+            $progression = 0;
+
+            switch ($criteriaType) {
+                case 'book_count':
+                    $progression = $this->readingRepository->countReadBooksAfterDate($user, $startDate);
+                break;
+                case 'genre':
+        
+                break;
+                case 'author':
+        
+                break;
+            }
+
+            $participation->setParticipProgression($progression);
+
+            if($progression >= $target) {
+                $participation->setParticipStatut('completee');
+            }
+  
+        }
+            $this->entityManager->flush();
+    }
+}

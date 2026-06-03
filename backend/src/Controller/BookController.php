@@ -12,6 +12,7 @@ use App\Repository\BookRepository;
 use App\Repository\ReadingRepository;
 use App\Entity\Book;
 use App\Entity\Reading;
+use App\Service\QuestProgressionService;
 
 final class BookController extends AbstractController
 {
@@ -21,6 +22,7 @@ final class BookController extends AbstractController
     private BookRepository $bookRepository,
     private EntityManagerInterface $entityManager,
     private ReadingRepository $readingRepository,
+    private QuestProgressionService $questprogressionService,
     ) {}
 
     #[Route('/api/books/search', name: 'app_books_search', methods: ['GET'])]
@@ -130,7 +132,14 @@ final class BookController extends AbstractController
         }
            $reading->setReadingStatus($data['reading_status']);
         
+        if($data['reading_status'] === 'lu') {
+        $reading->setReadingEnd(new \DateTime());
+        }
+        
         $this->entityManager->flush();
+
+        $user = $reading->getUser();
+        $this->questprogressionService->updateProgression($user);
 
         return $this->json(['message' => 'Statut update'], 200);
     }
