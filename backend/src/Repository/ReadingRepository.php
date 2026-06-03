@@ -16,6 +16,15 @@ class ReadingRepository extends ServiceEntityRepository
         parent::__construct($registry, Reading::class);
     }
 
+    public function countReadBooksAfterDate($user, \DateTime $startDate, ?string $genre = null, ?string $author = null): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+    $sql = 'SELECT COUNT(*) FROM reading WHERE user_id = :user AND reading_status = "lu" AND reading_end >= :startDate';
+    $result = $conn->executeQuery($sql, ['user' => $user->getId(), 'startDate' => $startDate->format('Y-m-d')]);
+    
+    return (int) $result->fetchOne();
+}
+
     //    /**
     //     * @return Reading[] Returns an array of Reading objects
     //     */
