@@ -26,17 +26,21 @@ class QuestProgressionService
             $criteriaValue = $quest->getQuestCriteriaValue();
             $target = $quest->getQuestCriteriaTarget();
 
+             if($startDate === null) {
+                    continue;}
+
             $progression = 0;
 
             switch ($criteriaType) {
                 case 'book_count':
                     $progression = $this->readingRepository->countReadBooksAfterDate($user, $startDate);
+                   
                 break;
                 case 'genre':
-        
+                    $progression = $this->readingRepository->countReadBooksByGenreAfterDate($user, $startDate,$criteriaValue );
                 break;
                 case 'author':
-        
+                    $progression = $this->readingRepository->countReadBooksByAuthorAfterDate($user, $startDate,$criteriaValue );
                 break;
             }
 
