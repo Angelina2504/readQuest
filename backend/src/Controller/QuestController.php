@@ -82,6 +82,11 @@ final class QuestController extends AbstractController
     {
         $user = $this->getUser();
 
+        if($user === null){
+            return $this->json(['message' => 'Unauthorized'], 401);
+        }
+
+
         $participations = $this->participationRepository->findBy(['user' => $user]);
 
         $myquests = [];
@@ -111,10 +116,14 @@ final class QuestController extends AbstractController
 
         $quest = $this->questRepository->findOneBy(['id' => $id]);
 
+        if($quest === null){
+            return $this->json(['message' => 'Quest not found'], 404);
+        }
+
         $participation = $this->participationRepository->findOneBy(['user' => $user, 'quest' => $quest]);
 
         if($participation === null){
-            return $this->json(['message' => 'Quest not found'], 404);
+            return $this->json(['message' => 'Participation not found'], 404);
         }
 
         $this->entityManager->remove($participation);
