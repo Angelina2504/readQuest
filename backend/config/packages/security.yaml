@@ -49,6 +49,7 @@ security:
         - { path: ^/api/admin, roles: ROLE_ADMIN }
         - { path: ^/api/books, roles: ROLE_USER }
         - { path: ^/api/library, roles: ROLE_USER }
+        - { path: ^/api/quests, roles: ROLE_USER }
        
 
 when@test:
