@@ -10,8 +10,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BookRepository;
 use App\Repository\ReadingRepository;
+use App\Repository\GenreRepository;
+use App\Repository\AutorRepository;
 use App\Entity\Book;
 use App\Entity\Reading;
+use App\Entity\Genre;
+use App\Entity\Autor; 
 use App\Service\QuestProgressionService;
 
 final class BookController extends AbstractController
@@ -23,6 +27,8 @@ final class BookController extends AbstractController
     private EntityManagerInterface $entityManager,
     private ReadingRepository $readingRepository,
     private QuestProgressionService $questprogressionService,
+    private GenreRepository $genreRepository,
+    private AutorRepository $autorRepository,
     ) {}
 
     #[Route('/api/books/search', name: 'app_books_search', methods: ['GET'])]
@@ -69,7 +75,9 @@ final class BookController extends AbstractController
         if($user === null){
             return $this->json(['message' => 'Unauthorized'], 401);
         }
+
         $book = $this->bookRepository->findOneBy(['book_isbn' => $data['book_isbn']]);
+        
 
         if($book === null){
             $book = new Book();
@@ -80,9 +88,34 @@ final class BookController extends AbstractController
             $book->setBookDescription($data['book_description']);
             $book->setBookLanguage($data['book_language']);
             $book->setBookCover($data['book_cover']);
+    
+        foreach ($data['books_genre'] ?? [] as $genreName) {
+
+        $genre =$this->genreRepository->findOneBy(['genre_name' => $genreName]);
+
+        if($genre === null){
+            $genre = new Genre();
+            $genre->setGenreName($genreName);
         }
-        $this->entityManager->persist($book);
-        $this->entityManager->flush();
+            $this->entityManager->persist($genre);
+            $book->addGenre($genre);
+        }
+
+        foreach ($data['book_autors'] ?? [] as $autorName) {
+
+        $autor =$this->autorRepository->findOneBy(['autor_name' => $autorName]);
+
+        if($autor === null){
+            $autor = new Autor();
+            $autor->setAutorName($autorName);
+        }
+            $this->entityManager->persist($autor);
+            $book->addAutor($autor);
+        }
+
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
+        }
         
         $existingReading=$this->readingRepository->findOneBy(['user' => $user, 'book' => $book]);
 
