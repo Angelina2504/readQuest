@@ -5,7 +5,7 @@ import Contact from '@/views/ContactUs.vue';
 import HomeView from '@/views/HomeView.vue';
 import Login from '@/views/auth/LoginAuth.vue';
 import Profil from '@/views/ProfilUser.vue';
-import Quest from '@/views/Quest.vue';
+import QuestView from '@/views/QuestView.vue';
 import Register from '@/views/auth/Register.vue';
 import Bibliotheque from '@/views/BibliothequeView.vue'
 import { useAuthStore } from '@/stores/authStore';
@@ -17,11 +17,12 @@ const routes = [
   { path: '/contact', component: Contact, name:'Contact'},
   { path: '/login', component: Login, name:'Se connecter',  meta: {requiresAuth : false}},
   { path: '/signin', component: Register, name:'Inscription', meta: {requiresAuth : false}},
+  { path:'/quests', component: QuestView, name:'Quest'},
 
   // user
   { path: '/profil', component: Profil, name:'Profil', meta: {requiresAuth : true}},
-  { path: '/quests', component: Quest, name:'Quête', meta: {requiresAuth : true}},
   { path: '/bibliotheque', component: Bibliotheque, name:'Bibliotheque', meta: {requiresAuth : true}},
+
 
   //admin
   { path: '/admin', component: AdminView, name:"Admin", meta:{requiresAdmin : true}},
