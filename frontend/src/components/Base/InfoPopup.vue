@@ -1,7 +1,8 @@
 <template>
-  <img 
-    class="button-question" 
-    :src="buttonImgPopup" 
+  <img
+    class="button-question"
+    :src="buttonImgPopup"
+    :style="{ width: buttonSize + 'px' }"
     alt="Aide"
     @click="isOpen = true"/>
   
@@ -28,6 +29,10 @@ defineProps({
   buttonImgPopup: {
     type: String,
     default: '/src/assets/icons/ptInterogationBlack.png'
+  },
+  buttonSize: {
+    type: Number,
+    default: 25
   }
 });
 

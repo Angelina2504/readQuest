@@ -6,7 +6,10 @@
             <div class="quest-card" v-for="participation in participations" :key="participation.participation_id">
                 <img :src="'/src/assets/quetes/quest/' + participation.quest_badge" :alt="participation.quest_badge" class="quest-badge" />
                 <p class="quest-name">{{ participation.quest_title }}</p>
-                <span class="quest-difficulty">{{ participation.quest_difficulty }}</span>
+                <div class="difficulty-row">
+                    <span class="quest-difficulty">{{ participation.quest_difficulty }}</span>
+                    <InfoPopup :buttonSize="16"><LevelRules/></InfoPopup>
+                </div>
                 <p class="quest-description">{{ participation.quest_description }}</p>
                 <p class="quest-progression">{{ participation.particip_progression }} / {{ participation.quest_criteria_target }}</p>
                 <button class="btn-leave" @click="leaveQuest(participation.quest_id)">Quitter la quête</button>
@@ -16,6 +19,8 @@
 </template>
 
 <script setup>
+import LevelRules from '../information/LevelRules.vue';
+import InfoPopup from '../Base/InfoPopup.vue';
 import { questService } from '@/services/questService';
 import { onMounted, ref } from 'vue';
 
@@ -45,7 +50,7 @@ const leaveQuest = async(id) => {
 
 <style scoped>
 .quest-wrapper {
-  padding: 16px 20px 40px;
+  padding: 0 20px 40px;
   background-color: #FDF8F3;
 }
 
@@ -96,6 +101,12 @@ const leaveQuest = async(id) => {
   font-weight: 600;
   color: #333;
   text-align: center;
+}
+
+.difficulty-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .quest-difficulty {

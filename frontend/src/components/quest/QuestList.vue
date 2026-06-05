@@ -6,7 +6,10 @@
             <div class="quest-card" v-for="quest in quests" :key="quest.quest_id">
                 <img :src="'/src/assets/quetes/quest/' + quest.quest_badge" :alt="quest.quest_badge" class="quest-badge" />
                 <p class="quest-name">{{ quest.quest_title }}</p>
-                <span class="quest-difficulty">{{ quest.quest_difficulty }}</span>
+                <div class="difficulty-row">
+                    <span class="quest-difficulty">{{ quest.quest_difficulty }}</span>
+                    <InfoPopup :buttonSize="16"><LevelRules/></InfoPopup>
+                </div>
                 <p class="quest-description">{{ quest.quest_description }}</p>
                 <button v-if="authStore.isAuthenticated" class="btn-join" @click="handleJoin(quest.quest_id)">Rejoindre</button>
             </div>
@@ -18,6 +21,8 @@
 import { onMounted, ref } from 'vue';
 import { questService } from '@/services/questService';
 import { useAuthStore } from '@/stores/authStore';
+import LevelRules from '../information/LevelRules.vue';
+import InfoPopup from '../Base/InfoPopup.vue';
 
 const authStore = useAuthStore()
 const errorMessage = ref(null);
@@ -44,9 +49,8 @@ const handleJoin = async (id) => {
 
 <style scoped>
 .quest-wrapper {
-  padding: 40px 20px;
+  padding: 40px 20px 16px;
   background-color: #FDF8F3;
-  min-height: 60vh;
 }
 
 .quest-title {
@@ -96,6 +100,12 @@ const handleJoin = async (id) => {
   font-weight: 600;
   color: #333;
   text-align: center;
+}
+
+.difficulty-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .quest-difficulty {
