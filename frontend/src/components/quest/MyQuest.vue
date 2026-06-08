@@ -39,7 +39,7 @@ onMounted(async () => {
 const leaveQuest = async(id) => {
   try {
     await questService.leaveQuests(id)
-    participations.value = participations.value.filter(p => p.participation_id !== id)
+    participations.value = participations.value.filter(participations => participations.quest_id !== id)
   } catch (error) {
      console.error("Erreur détaillée:", error);
     errorMessage.value = "Data non chargées";

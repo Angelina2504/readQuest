@@ -27,6 +27,8 @@ import InfoPopup from '../Base/InfoPopup.vue';
 const authStore = useAuthStore()
 const errorMessage = ref(null);
 const quests = ref([]);
+const emit = defineEmits(['joinQuests'])
+
 
 onMounted(async () => {
   try {
@@ -40,6 +42,7 @@ onMounted(async () => {
 const handleJoin = async (id) => {
     try {
         await questService.joinQuests(id)
+        emit('joinQuests')
     } catch (error) {
         console.error("Erreur:", error);
     }

@@ -1,7 +1,7 @@
 <template>
   <main>
-    <QuestList/>
-    <MyQuest v-if="authStore.isAuthenticated"/>
+    <QuestList  @joinQuests="refreshList"/>
+    <MyQuest v-if="authStore.isAuthenticated" :key="listKey"/>
 
   </main>
 </template>
@@ -10,8 +10,11 @@
 import QuestList from '@/components/quest/QuestList.vue';
 import MyQuest from '@/components/quest/MyQuest.vue';
 import { useAuthStore } from '@/stores/authStore';
+import { ref } from 'vue';
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
+const refreshList = () => listKey.value++;
+const listKey = ref(0);
 
 </script>
 
