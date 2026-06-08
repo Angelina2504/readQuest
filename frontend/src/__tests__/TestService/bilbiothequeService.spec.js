@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { bibliothequeService } from '../services/bibliothequeService'
-import api from '../services/api'
+import { bibliothequeService } from '../../services/bibliothequeService'
+import api from '../../services/api'
 
-vi.mock('../services/api')
+vi.mock('../../services/api')
 
 describe ('bibliothequeService', () => {
 
