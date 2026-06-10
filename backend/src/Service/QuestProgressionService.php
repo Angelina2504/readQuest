@@ -5,6 +5,7 @@ namespace App\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ParticipationRepository;
 use App\Repository\ReadingRepository;
+use App\Service\ActivityLogService;
 
 class QuestProgressionService
 {
@@ -13,6 +14,7 @@ class QuestProgressionService
     private EntityManagerInterface $entityManager,
     private ParticipationRepository $participationRepository,
     private ReadingRepository $readingRepository,
+    private ActivityLogService $activityLogService,
     ) {}
 
     public function updateProgression($user): void
@@ -49,8 +51,15 @@ class QuestProgressionService
             if($progression >= $target) {
                 $participation->setParticipStatut('completee');
             }
+            
+            $action = ($progression >= $target) ? 'quest_completed' : 'quest_progressed';
+            $this->activityLogService->log($user->getId(), $action, $quest->getQuestTitle());
+
+
   
         }
             $this->entityManager->flush();
+
+           
     }
 }

@@ -17,6 +17,7 @@ use App\Entity\Reading;
 use App\Entity\Genre;
 use App\Entity\Autor; 
 use App\Service\QuestProgressionService;
+use App\Service\ActivityLogService;
 
 final class BookController extends AbstractController
 {
@@ -29,6 +30,7 @@ final class BookController extends AbstractController
     private QuestProgressionService $questprogressionService,
     private GenreRepository $genreRepository,
     private AutorRepository $autorRepository,
+    private ActivityLogService $activityLogService,
     ) {}
 
     #[Route('/api/books/search', name: 'app_books_search', methods: ['GET'])]
@@ -111,7 +113,7 @@ final class BookController extends AbstractController
         }
             $this->entityManager->persist($autor);
             $book->addAutor($autor);
-        }
+        } 
 
             $this->entityManager->persist($book);
             $this->entityManager->flush();
@@ -131,6 +133,8 @@ final class BookController extends AbstractController
         
         $this->entityManager->persist($reading);
         $this->entityManager->flush();
+
+        $this->activityLogService->log($user->getId(), 'book_added', $book->getBookName());
 
         return $this->json(['message' => 'Book created successfully'], 201);
         
@@ -173,6 +177,8 @@ final class BookController extends AbstractController
 
         $user = $reading->getUser();
         $this->questprogressionService->updateProgression($user);
+
+        $this->activityLogService->log($user->getId(), 'statut_patched', $reading->getBook()->getBookName());
 
         return $this->json(['message' => 'Statut update'], 200);
     }
