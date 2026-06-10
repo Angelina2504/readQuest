@@ -11,6 +11,7 @@ use App\Repository\QuestRepository;
 use App\Repository\ParticipationRepository;
 use App\Entity\Participation;
 use App\Entity\Quest;
+use App\Service\ActivityLogService;
 
 final class QuestController extends AbstractController
 {
@@ -18,6 +19,7 @@ final class QuestController extends AbstractController
     private ParticipationRepository $participationRepository,
     private EntityManagerInterface $entityManager,
     private QuestRepository $questRepository,
+    private ActivityLogService $activityLogService,
     ) {}
 
     #[Route('/api/quests', name: 'quest_available', methods: ['GET'])]
@@ -73,6 +75,9 @@ final class QuestController extends AbstractController
         $this->entityManager->persist($participation);
         $this->entityManager->flush();
 
+        $this->activityLogService->log($user->getId(), 'quest_joined', $quest->getQuestTitle());
+
+
          return $this->json(['message' => 'Quest joined successfully'], 201);
 
     }
@@ -85,7 +90,6 @@ final class QuestController extends AbstractController
         if($user === null){
             return $this->json(['message' => 'Unauthorized'], 401);
         }
-
 
         $participations = $this->participationRepository->findBy(['user' => $user]);
 
@@ -130,7 +134,8 @@ final class QuestController extends AbstractController
 
         $this->entityManager->flush();
 
+        $this->activityLogService->log($user->getId(), 'quest_left', $quest->getQuestTitle());
+
         return $this->json(['message' => 'Quest Delete'], 200);
     }
-
 }
