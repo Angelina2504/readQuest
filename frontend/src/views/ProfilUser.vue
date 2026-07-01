@@ -49,9 +49,9 @@ const activeTab = ref('infos')
 .Compte, .Lecteur {
   cursor: pointer;
   padding: 12px 20px;
-  border: 2px solid #944242;
-  background: white;
-  color: #333;
+  border: 2px solid #833c3c;
+  background: #FFFFFF;
+  color: #333333;
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -65,7 +65,7 @@ const activeTab = ref('infos')
 
 .Compte:hover, .Lecteur:hover,
 .Compte.active, .Lecteur.active {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 </style>

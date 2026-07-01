@@ -61,12 +61,12 @@ const handleAdd = async (book) => {
 .search-bar input {
   flex: 1;
   padding: 10px 16px;
-  border: 2px solid #944242;
+  border: 2px solid #833c3c;
   border-radius: 25px;
   font-size: 14px;
   outline: none;
-  background: white;
-  color: #333;
+  background: #FFFFFF;
+  color: #333333;
 }
 
 .search-bar input:focus {
@@ -75,9 +75,9 @@ const handleAdd = async (book) => {
 
 .btn-search {
   padding: 10px 24px;
-  background-color: #944242;
-  color: white;
-  border: 2px solid #944242;
+  background-color: #833c3c;
+  color: #FFFFFF;
+  border: 2px solid #833c3c;
   border-radius: 25px;
   font-size: 14px;
   font-weight: 500;
@@ -86,8 +86,8 @@ const handleAdd = async (book) => {
 }
 
 .btn-search:hover {
-  background-color: white;
-  color: #944242;
+  background-color: #FFFFFF;
+  color: #833c3c;
 }
 
 .results-grid {
@@ -97,7 +97,7 @@ const handleAdd = async (book) => {
 }
 
 .book-card {
-  background: white;
+  background: #FFFFFF;
   border: 2px solid #EDE4D3;
   border-radius: 16px;
   padding: 16px;
@@ -110,7 +110,7 @@ const handleAdd = async (book) => {
 }
 
 .book-card:hover {
-  border-color: #944242;
+  border-color: #833c3c;
 }
 
 .book-card img {
@@ -125,16 +125,16 @@ const handleAdd = async (book) => {
   margin: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   text-align: center;
 }
 
 .btn-add {
   padding: 6px 20px;
-  background-color: white;
-  border: 2px solid #944242;
+  background-color: #FFFFFF;
+  border: 2px solid #833c3c;
   border-radius: 25px;
-  color: #944242;
+  color: #833c3c;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -142,12 +142,12 @@ const handleAdd = async (book) => {
 }
 
 .btn-add:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 
 .success {
-  color: #4f805d;
+  color: #385a3f;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 12px;

@@ -79,7 +79,7 @@ const isOpen = ref(false);
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background: #944242; 
+  background: #833c3c; 
   border-radius: 10px;
 }
 

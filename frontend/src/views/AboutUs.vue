@@ -64,19 +64,19 @@ const aboutLinks = ([
 .about-title {
   font-size: 20px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   text-decoration: none;
   margin-bottom: 10px;
 }
 
 .about-title:hover {
-  color: #944242;
+  color: #833c3c;
 }
 
 .about-text {
   font-size: 16px;
   line-height: 1.6;
-  color: #333;
+  color: #333333;
   margin: 0;
 }
 
@@ -85,8 +85,8 @@ const aboutLinks = ([
 }
 
 .img-deco img {
-  max-height: 400px; /* Ajuste selon la taille de ton image */
+  max-height: 400px;
   width: auto;
-  filter: sepia(0.2); 
+  filter: sepia(0.2);
 }
 </style>

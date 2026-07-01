@@ -53,7 +53,7 @@ const buttonLinks = ([
 .hero-text {
   font-size: 1.5rem;
   line-height: 1.4;
-  color: #1a1a1a;
+  color: #333333;
   margin-bottom: 40px;
   padding: 30px;
 }
@@ -68,24 +68,23 @@ const buttonLinks = ([
   display: inline-block;
   padding: 12px 30px;
   background-color: #EDE4D3;
-  border: 1px solid #944242;
+  border: 1px solid #833c3c;
   border-radius: 25px;  
-  color: #1a1a1a;
+  color: #333333;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .custom-button:hover {
- background-color: #944242;
-  color: white;
+ background-color: #833c3c;
+  color: #FFFFFF;
   transform: translateY(-2px);
 }
 
 .img-deco img {
   max-width: 100%;
   height: auto;
-
 }
 
 </style>
