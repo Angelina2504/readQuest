@@ -11,7 +11,7 @@ jobs:
         image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: readquest_test
+          MYSQL_DATABASE: readquest
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "KERNEL_CLASS='App\Kernel'" > .env.test
           echo 'APP_SECRET=$ecretf0rt3st' >> .env.test
-          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest_test?serverVersion=8.4&charset=utf8mb4"' >> .env.test
+          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env.test
 
       - name: Install Composer dependencies
         working-directory: backend
