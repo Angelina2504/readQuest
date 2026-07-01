@@ -20,6 +20,11 @@ jobs:
         ports:
           - 3306:3306
 
+      mongodb:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+
     steps:
       - uses: actions/checkout@v4
 
@@ -45,7 +50,7 @@ jobs:
           echo 'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' >> .env
           echo 'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' >> .env
           echo 'JWT_PASSPHRASE=test_passphrase' >> .env
-          echo 'GOOGLE_BOOKS_API_KEY=dummy' >> .env
+          echo 'GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }}' >> .env
 
       - name: Create .env.test
         working-directory: backend
