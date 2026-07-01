@@ -45,7 +45,7 @@ jobs:
 
       - name: Install Composer dependencies
         working-directory: backend
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist --no-scripts
 
       - name: Run migrations
         working-directory: backend
