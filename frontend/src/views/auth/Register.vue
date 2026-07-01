@@ -174,4 +174,15 @@ button:hover {
   color: #A50000;
   padding: 10px 10px 0px 50px ;
 }
+
+@media (max-width: 768px) {
+  .formRegister {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+  form {
+    border-radius: 20px;
+    padding: 28px 20px;
+  }
+}
 </style>

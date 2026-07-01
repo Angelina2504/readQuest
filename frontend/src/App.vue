@@ -38,4 +38,16 @@ body {
 .main-content {
   flex: 1;
 }
+
+@media (min-width: 992px) {
+  .main-content {
+    padding: 0 clamp(40px, 6vw, 100px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-content {
+    padding: 0 clamp(100px, 10vw, 160px);
+  }
+}
 </style>

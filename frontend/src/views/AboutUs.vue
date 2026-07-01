@@ -89,4 +89,17 @@ const aboutLinks = ([
   width: auto;
   filter: sepia(0.2);
 }
+
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .img-deco img {
+    max-height: 200px;
+  }
+  .about-column {
+    text-align: center;
+  }
+}
 </style>
