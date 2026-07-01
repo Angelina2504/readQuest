@@ -38,6 +38,7 @@ jobs:
           
           echo 'MONGODB_URI=mongodb://localhost:27017' >> .env
           echo 'MONGODB_DB=readquest_test' >> .env
+          echo 'DEFAULT_URI=http://localhost:8080' >> .env
 
       - name: Create .env.test
         working-directory: backend
