@@ -69,6 +69,8 @@ class UserControllerTest extends WebTestCase
             json_encode([
                 'birthday' => '1992-05-05',
                 'gender' => 'Femme',
+                'alias' => 'testuser',
+                'email' => 'test@test.com',
                  ])
         );
 
@@ -85,6 +87,8 @@ class UserControllerTest extends WebTestCase
             json_encode([
                 'birthday' => '1992-05-05',
                 'gender' => 'Femme',
+                'alias' => 'testuser',
+                'email' => 'test@test.com',
                  ])
         );
         $this->client->request(
@@ -118,6 +122,8 @@ class UserControllerTest extends WebTestCase
             json_encode([
                 'birthday' => '1992-05-05',
                 'gender' => 'Femme',
+                'alias' => 'testuser',
+                'email' => 'test@test.com',
                  ])
         );
 
