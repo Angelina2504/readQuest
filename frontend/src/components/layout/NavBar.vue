@@ -6,9 +6,13 @@
       </router-link>
     </div>
 
-  <div class="navbar-menu">
-    <template 
-        v-for="item in menuItems" 
+    <button class="burger" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+  <div class="navbar-menu" :class="{ 'menu-open': menuOpen }">
+    <template
+        v-for="item in menuItems"
         :key="item.text">
       <router-link
         v-if="(!item.guestOnly || !authStore.isAuthenticated) && (!item.requiresAuth || authStore.isAuthenticated)"
@@ -16,6 +20,7 @@
         class="nav-item"
         @mouseenter="item.isHovered = true"
         @mouseleave="item.isHovered = false"
+        @click="menuOpen = false"
       >
         <img 
           :src="item.isHovered ? item.iconOpen : item.iconClosed" 
@@ -27,7 +32,7 @@
   <div
   class="nav-item"
   v-if="authStore.isAuthenticated"
-    @click="handleLogout"
+    @click="handleLogout(); menuOpen = false"
     @mouseenter="authHover = true"
     @mouseleave="authHover = false">
   <img 
@@ -39,7 +44,8 @@
   to="/login"
   class="nav-item"
   @mouseenter="authHover = true"
-  @mouseleave="authHover = false">
+  @mouseleave="authHover = false"
+  @click="menuOpen = false">
   <img
     :src="authHover ? icons.open : icons.closed"
     alt="Auth icon"
@@ -65,6 +71,7 @@ const icons = {
 };
 
 const authHover = ref(false);
+const menuOpen = ref(false);
 
 const menuItems = reactive([
   { text: 'Accueil', path: '/', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
@@ -132,5 +139,105 @@ function handleLogout() {
 
 .nav-item:hover p {
   color: #833c3c;
+}
+
+/* ── Sticky ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── Burger (caché sur desktop) ── */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #833c3c;
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Tablette : pill plus compact (992px → 768px) ── */
+@media (min-width: 768px) and (max-width: 992px) {
+  .navbar-menu {
+    gap: 0;
+    padding: 4px 12px;
+  }
+  .nav-item {
+    padding: 8px 8px;
+  }
+  .nav-item p {
+    font-size: 12px;
+  }
+  .nav-item img {
+    width: 18px;
+  }
+}
+
+/* ── Mobile : burger + drawer (< 768px) ── */
+@media (max-width: 768px) {
+  .navbar {
+    position: sticky;
+    padding: 12px 0 10px;
+  }
+  .navbar-logo img {
+    height: 56px;
+    margin-bottom: 0;
+  }
+  .burger {
+    display: flex;
+  }
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-top: 2px solid #833c3c;
+    border-radius: 0 0 16px 16px;
+    padding: 8px 20px 16px;
+    gap: 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    z-index: 200;
+  }
+  .navbar-menu.menu-open {
+    display: flex;
+  }
+  .nav-item {
+    padding: 13px 8px;
+    border-bottom: 1px solid #EDE4D3;
+    width: 100%;
+    font-size: 15px;
+  }
+  .nav-item:last-child {
+    border-bottom: none;
+  }
+  .nav-item img {
+    width: 22px;
+  }
+  .nav-item p {
+    font-size: 15px;
+  }
 }
 </style>
