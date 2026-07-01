@@ -50,7 +50,7 @@ const menuLinks = ([
   { text: 'Profil', path: '/profil', isHovered: false, isUser: true },
   { text: 'Inscription', path: '/signin', isHovered: false, isUser: true },
   { text: 'Se connecter', path: '/login', isHovered: false, isUser: true },
- 
+
 ]);
 
 const securityLinks =([
@@ -63,7 +63,7 @@ const imgLinks = ([
   {name: 'Facebook', url : 'https://www.facebook.com/', icons: 'facebook.png',isHovered: false}
 ]);
 
-const partnerLinks = ([ 
+const partnerLinks = ([
   { text: 'Livresse_Podcast', url :'https://linktr.ee/LivressePodcast', isHovered:false}
 ])
 
@@ -89,24 +89,24 @@ const partnerLinks = ([
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #333;
+  color: #333333;
 }
 
 .footer-nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5px 20px; 
+  gap: 5px 20px;
 }
 
 .footer-link {
   text-decoration: none;
-  color: #333;
+  color: #333333;
   font-size: 14px;
   transition: color 0.3s ease;
 }
 
 .footer-link:hover {
-  color: #944242;
+  color: #833c3c;
 }
 
 .center {

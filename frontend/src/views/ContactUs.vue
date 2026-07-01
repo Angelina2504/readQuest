@@ -58,8 +58,8 @@ const handleSubmit = () => {
 }
 
 form {
-  background-color: #FDFBF7; 
-  border: 1.5px solid #A66D6D; 
+  background-color: #FDF8F3; 
+  border: 1.5px solid #833c3c; 
   border-radius: 50px; 
   padding: 40px;
   width: 100%;
@@ -72,7 +72,7 @@ form {
 
 .form-title {
   font-size: 1.2rem;
-  color: #333;
+  color: #333333;
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
@@ -97,12 +97,12 @@ form {
 label {
   margin-bottom: 5px;
   font-size: 0.9rem;
-  color: #333;
+  color: #333333;
 }
 
 input, textarea {
   background-color: #EDE4D3;
-  border: 1px solid #944242;
+  border: 1px solid #833c3c;
   border-radius: 25px;
   padding: 10px 20px;
   outline: none;
@@ -118,7 +118,7 @@ textarea {
 
 button {
   background-color: #EDE4D3;
-  border: 1.5px solid #944242;
+  border: 1.5px solid #833c3c;
   border-radius: 20px;
   padding: 8px 40px;
   cursor: pointer;
@@ -127,7 +127,7 @@ button {
 }
 
 button:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 </style>

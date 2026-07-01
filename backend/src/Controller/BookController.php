@@ -47,7 +47,10 @@ final class BookController extends AbstractController
          $data = $response->toArray();
          
         $books = [];
-        
+
+        if(empty($data['items'])){
+            return $this->json([], 200);
+        };
          
         foreach ($data['items'] as $item) {
         $identifiers = $item['volumeInfo']['industryIdentifiers'] ?? [];
@@ -119,7 +122,8 @@ final class BookController extends AbstractController
             $this->entityManager->flush();
         }
         
-        $existingReading=$this->readingRepository->findOneBy(['user' => $user, 'book' => $book]);
+        $existingReading=$this->readingRepository->findOneBy(
+            ['user' => $user, 'book' => $book]);
 
         if($existingReading !== null){
             return $this->json(['message' => 'Book or reading already in database'], 200);

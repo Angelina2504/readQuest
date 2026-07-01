@@ -41,8 +41,8 @@ class QuestProgressionService
                 case 'genre':
                     $progression = $this->readingRepository->countReadBooksByGenreAfterDate($user, $startDate,$criteriaValue );
                 break;
-                case 'author':
-                    $progression = $this->readingRepository->countReadBooksByAuthorAfterDate($user, $startDate,$criteriaValue );
+                case 'autor':
+                    $progression = $this->readingRepository->countReadBooksByAutorAfterDate($user, $startDate,$criteriaValue );
                 break;
             }
 
@@ -54,12 +54,7 @@ class QuestProgressionService
             
             $action = ($progression >= $target) ? 'quest_completed' : 'quest_progressed';
             $this->activityLogService->log($user->getId(), $action, $quest->getQuestTitle());
-
-
-  
         }
-            $this->entityManager->flush();
-
-           
+            $this->entityManager->flush();        
     }
 }

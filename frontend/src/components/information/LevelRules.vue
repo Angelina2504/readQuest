@@ -56,12 +56,12 @@ const levelRules = [
 
 .modal-main-title {
   text-align: center;
-  color: #944242;
+  color: #833c3c;
   font-family: serif;
   font-size: 28px;
   margin-bottom: 30px;
   margin-left: 85px;
-  border-bottom: 1px solid #e0dbd5;
+  border-bottom: 1px solid #EDE4D3;
   padding-bottom: 15px;
 }
 
@@ -77,7 +77,7 @@ const levelRules = [
   align-items: center;
   gap: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px inset #eeeae5;
+  border-bottom: 1px inset #EDE4D3;
 }
 
 .level-card:last-child {
@@ -102,14 +102,14 @@ const levelRules = [
 .level-name {
   font-size: 18px;
   font-weight: 600;
-  color: #944242;
+  color: #833c3c;
   margin: 0 0 5px 0;
 }
 
 .level-text {
   font-size: 15px;
   line-height: 1.5;
-  color: #333;
+  color: #333333;
   margin: 0;
   text-align: center;
 }
@@ -119,8 +119,8 @@ const levelRules = [
   margin: 30px auto 0;
   padding: 10px 25px;
   background-color: transparent;
-  border: 1px solid #944242;
-  color: #944242;
+  border: 1px solid #833c3c;
+  color: #833c3c;
   cursor: pointer;
   transition: all 0.3s;
   font-weight: 500;
@@ -129,7 +129,7 @@ const levelRules = [
 }
 
 .close-button:hover {
-  background-color: #944242;
+  background-color: #833c3c;
   color: #F9F5F0;
 }
 </style>

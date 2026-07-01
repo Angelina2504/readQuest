@@ -77,8 +77,8 @@ const handleSubmit = async () => {
 }
 
 form {
-  background-color: #FDFBF7;
-  border: 2px solid #944242; 
+  background-color: #FDF8F3;
+  border: 2px solid #833c3c; 
   border-radius: 40px; 
   padding: 40px;
   width: 100%;
@@ -95,7 +95,7 @@ form::before {
   text-align: center;
   font-size: 24px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   margin-bottom: 10px;
 }
 
@@ -107,13 +107,13 @@ form::before {
 
 label {
   font-size: 14px;
-  color: #333;
+  color: #333333;
   margin-left: 10px;
 }
 
 input {
   background-color: #EDE4D3; 
-  border: 1px solid #944242;
+  border: 1px solid #833c3c;
   border-radius: 20px;
   padding: 12px 20px;
   font-size: 14px;
@@ -122,19 +122,19 @@ input {
 }
 
 input:focus {
-  background-color: #e5dac4;
+  background-color: #EDE4D3;
   box-shadow: 0 0 0 2px rgba(148, 66, 66, 0.2);
 }
 
 button {
   margin-top: 20px;
   background-color: #EDE4D3;
-  border: 1px solid #944242;
+  border: 1px solid #833c3c;
   border-radius: 25px;
   padding: 12px;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   cursor: pointer;
   transition: all 0.3s ease;
   align-self: center;
@@ -142,13 +142,13 @@ button {
 }
 
 button:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 
 .error-message {
-color: red;
-text-align: center;
-margin-top: 10px;
+  color: #A50000;
+  text-align: center;
+  margin-top: 10px;
 }
 </style>

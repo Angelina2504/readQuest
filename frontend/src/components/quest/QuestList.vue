@@ -29,7 +29,6 @@ const errorMessage = ref(null);
 const quests = ref([]);
 const emit = defineEmits(['joinQuests'])
 
-
 onMounted(async () => {
   try {
     quests.value = await questService.getQuest()
@@ -59,12 +58,12 @@ const handleJoin = async (id) => {
 .quest-title {
   font-size: 20px;
   font-weight: 600;
-  color: #944242;
+  color: #833c3c;
   margin-bottom: 24px;
 }
 
 .empty {
-  color: #999;
+  color: #525252;
   font-size: 14px;
 }
 
@@ -75,7 +74,7 @@ const handleJoin = async (id) => {
 }
 
 .quest-card {
-  background: white;
+  background: #FFFFFF;
   border: 2px solid #EDE4D3;
   border-radius: 16px;
   padding: 20px;
@@ -88,7 +87,7 @@ const handleJoin = async (id) => {
 }
 
 .quest-card:hover {
-  border-color: #944242;
+  border-color: #833c3c;
 }
 
 .quest-badge {
@@ -101,7 +100,7 @@ const handleJoin = async (id) => {
   margin: 0;
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   text-align: center;
 }
 
@@ -113,8 +112,8 @@ const handleJoin = async (id) => {
 
 .quest-difficulty {
   font-size: 12px;
-  color: white;
-  background-color: #944242;
+  color: #FFFFFF;
+  background-color: #833c3c;
   border-radius: 25px;
   padding: 4px 12px;
 }
@@ -122,16 +121,16 @@ const handleJoin = async (id) => {
 .quest-description {
   margin: 0;
   font-size: 13px;
-  color: #666;
+  color: #525252;
   text-align: center;
 }
 
 .btn-join {
   padding: 6px 20px;
-  background-color: white;
-  border: 2px solid #944242;
+  background-color: #FFFFFF;
+  border: 2px solid #833c3c;
   border-radius: 25px;
-  color: #944242;
+  color: #833c3c;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -139,7 +138,7 @@ const handleJoin = async (id) => {
 }
 
 .btn-join:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 </style>

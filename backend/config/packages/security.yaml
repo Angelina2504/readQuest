@@ -44,13 +44,12 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        - { path: ^/api/auth, roles: PUBLIC_ACCESS }
-        - { path: ^/api/user, roles: ROLE_USER }
         - { path: ^/api/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/user, roles: ROLE_USER }
         - { path: ^/api/books, roles: ROLE_USER }
         - { path: ^/api/library, roles: ROLE_USER }
         - { path: ^/api/quests, roles: PUBLIC_ACCESS }
-       
+        - { path: ^/api/auth, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

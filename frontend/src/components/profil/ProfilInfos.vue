@@ -107,8 +107,8 @@ const handleAvatarChange = async(event) => {
 
 <style scoped>
 .id-card {
-  background: white;
-  border: 2px solid #944242;
+  background: #FFFFFF;
+  border: 2px solid #833c3c;
   border-radius: 16px;
   padding: 40px;
   width: 100%;
@@ -140,13 +140,13 @@ const handleAvatarChange = async(event) => {
 label {
   font-weight: 600;
   font-size: 14px;
-  color: #944242;
+  color: #833c3c;
 }
 
 p {
   margin: 0;
   font-size: 14px;
-  color: #333;
+  color: #333333;
 }
 
 .photo {
@@ -166,10 +166,10 @@ p {
 .edit-button {
   margin-top: 20px;
   padding: 8px 28px;
-  background-color: white;
-  border: 2px solid #944242;
+  background-color: #FFFFFF;
+  border: 2px solid #833c3c;
   border-radius: 25px;
-  color: #944242;
+  color: #833c3c;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -178,16 +178,16 @@ p {
 }
 
 .edit-button:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 
 .in-out {
   padding: 4px 10px;
   border-radius: 25px;
-  border: 1px solid #944242;
-  background-color: white;
-  color: #944242;
+  border: 1px solid #833c3c;
+  background-color: #FFFFFF;
+  color: #833c3c;
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
@@ -196,12 +196,12 @@ p {
 }
 
 .in-out:hover {
-  background-color: #944242;
-  color: white;
+  background-color: #833c3c;
+  color: #FFFFFF;
 }
 
 .error {
-  color: #944242;
+  color: #833c3c;
   font-size: 13px;
   text-align: center;
 }

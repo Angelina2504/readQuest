@@ -6,11 +6,11 @@
       </router-link>
     </div>
 
-  <div class="navbar-menu"> 
+  <div class="navbar-menu">
     <template 
         v-for="item in menuItems" 
         :key="item.text">
-      <router-link 
+      <router-link
         v-if="(!item.guestOnly || !authStore.isAuthenticated) && (!item.requiresAuth || authStore.isAuthenticated)"
         :to="item.path"
         class="nav-item"
@@ -40,9 +40,9 @@
   class="nav-item"
   @mouseenter="authHover = true"
   @mouseleave="authHover = false">
-  <img 
-    :src="authHover ? icons.open : icons.closed" 
-    alt="Auth icon" 
+  <img
+    :src="authHover ? icons.open : icons.closed"
+    alt="Auth icon"
   />
   <p>Se connecter</p>
 </router-link>
@@ -65,7 +65,7 @@ const icons = {
 };
 
 const authHover = ref(false);
- 
+
 const menuItems = reactive([
   { text: 'Accueil', path: '/', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
   { text: 'Notre histoire', path: '/about', iconClosed: icons.closed, iconOpen: icons.open, isHovered: false },
@@ -101,10 +101,10 @@ function handleLogout() {
 .navbar-menu {
   display: flex;
   gap: 24px;
-  border: 2px solid #944242;
+  border: 2px solid #833c3c;
   border-radius: 50px;
   padding: 4px 32px;
-  background: white; /* Fond blanc comme sur ton image */
+  background: #FFFFFF; /* Fond blanc comme sur ton image */
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
@@ -114,7 +114,7 @@ function handleLogout() {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: #333;
+  color: #333333;
   padding: 8px 12px;
   transition: all 0.3s ease;
 }
@@ -131,6 +131,6 @@ function handleLogout() {
 }
 
 .nav-item:hover p {
-  color: #944242;
+  color: #833c3c;
 }
 </style>

@@ -23,7 +23,6 @@ const routes = [
   { path: '/profil', component: Profil, name:'Profil', meta: {requiresAuth : true}},
   { path: '/bibliotheque', component: Bibliotheque, name:'Bibliotheque', meta: {requiresAuth : true}},
 
-
   //admin
   { path: '/admin', component: AdminView, name:"Admin", meta:{requiresAdmin : true}},
 ]

@@ -62,17 +62,17 @@ const deleteBook = async(id) => {
 .library-title {
   font-size: 20px;
   font-weight: 600;
-  color: #944242;
+  color: #833c3c;
   margin-bottom: 24px;
 }
 
 .empty {
-  color: #999;
+  color: #525252;
   font-size: 14px;
 }
 
 .error {
-  color: #b0413e;
+  color: #7a3535;
   font-size: 14px;
 }
 
@@ -83,7 +83,7 @@ const deleteBook = async(id) => {
 }
 
 .book-card {
-  background: white;
+  background: #FFFFFF;
   border: 2px solid #EDE4D3;
   border-radius: 16px;
   padding: 16px;
@@ -96,7 +96,7 @@ const deleteBook = async(id) => {
 }
 
 .book-card:hover {
-  border-color: #944242;
+  border-color: #833c3c;
 }
 
 .book-card img {
@@ -111,24 +111,24 @@ const deleteBook = async(id) => {
   margin: 0;
   font-size: 13px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   text-align: center;
 }
 
 .book-status {
   font-size: 12px;
-  color: white;
-  background-color: #944242;
+  color: #FFFFFF;
+  background-color: #833c3c;
   border-radius: 25px;
   padding: 4px 12px;
 }
 
 button {
   padding: 6px 16px;
-  background-color: white;
-  border: 2px solid #b0413e;
+  background-color: #FFFFFF;
+  border: 2px solid #7a3535;
   border-radius: 25px;
-  color: #b0413e;
+  color: #7a3535;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -136,18 +136,18 @@ button {
 }
 
 button:hover {
-  background-color: #b0413e;
-  color: white;
+  background-color: #7a3535;
+  color: #FFFFFF;
 }
 
 select {
   padding: 4px 12px;
-  border: 2px solid #944242;
+  border: 2px solid #833c3c;
   border-radius: 25px;
-  color: #944242;
+  color: #833c3c;
   font-size: 12px;
   font-weight: 500;
-  background-color: white;
+  background-color: #FFFFFF;
   cursor: pointer;
   outline: none;
 }

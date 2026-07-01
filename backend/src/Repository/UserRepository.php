@@ -38,7 +38,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
     return $this->createQueryBuilder('u')
         ->where('u.email = :identifier')
-        ->orWhere('u.user_alias = :identifier') // Utilisation de user_alias
+        ->orWhere('u.user_alias = :identifier') 
         ->setParameter('identifier', $identifier)
         ->getQuery()
         ->getOneOrNullResult();

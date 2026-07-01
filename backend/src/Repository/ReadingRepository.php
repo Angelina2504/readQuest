@@ -38,11 +38,15 @@ class ReadingRepository extends ServiceEntityRepository
             AND r.reading_status = :status
             AND r.reading_end >= :startDate
             AND g.genre_name = :genre';
-    $result = $conn->executeQuery($sql, ['user' => $user->getId(), 'startDate' => $startDate->format('Y-m-d'), 'genre' => $genre, 'status' => 'lu']);
+    $result = $conn->executeQuery($sql, [
+        'user' => $user->getId(),
+        'startDate' => $startDate->format('Y-m-d'), 
+        'genre' => $genre, 
+        'status' => 'lu']);
     return (int) $result->fetchOne();
 }
 
-     public function countReadBooksByAuthorAfterDate($user, $startDate, $autor)
+     public function countReadBooksByAutorAfterDate($user, $startDate, $autor)
 {
     $conn = $this->getEntityManager()->getConnection();
     $sql = 'SELECT COUNT(*) 
