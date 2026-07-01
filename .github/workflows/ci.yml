@@ -38,7 +38,14 @@ jobs:
           
           echo 'MONGODB_URI=mongodb://localhost:27017' >> .env
           echo 'MONGODB_DB=readquest_test' >> .env
+
           echo 'DEFAULT_URI=http://localhost:8080' >> .env
+          echo 'CORS_ALLOW_ORIGIN=http://localhost:5173' >> .env
+          
+          echo 'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' >> .env
+          echo 'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' >> .env
+          echo 'JWT_PASSPHRASE=test_passphrase' >> .env
+          echo 'GOOGLE_BOOKS_API_KEY=dummy' >> .env
 
       - name: Create .env.test
         working-directory: backend
@@ -53,6 +60,10 @@ jobs:
       - name: Install Composer dependencies
         working-directory: backend
         run: composer install --no-interaction --prefer-dist --no-scripts
+
+      - name: Generate JWT keypair
+        working-directory: backend
+        run: php bin/console lexik:jwt:generate-keypair --env=test --no-interaction
 
       - name: Run migrations
         working-directory: backend
