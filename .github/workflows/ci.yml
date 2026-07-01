@@ -33,13 +33,12 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --prefer-dist
 
-      - name: Create .env.test
+      - name: Create .env
         working-directory: backend
         run: |
-          echo "KERNEL_CLASS='App\Kernel'" > .env.test
-          echo 'APP_SECRET=$ecretf0rt3st' >> .env.test
-          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest_test?serverVersion=8.4&charset=utf8mb4"' >> .env.test
-
+          echo 'APP_ENV=dev' > .env
+          echo 'APP_SECRET=placeholder' >> .env
+          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env
       - name: Run migrations
         working-directory: backend
         run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
