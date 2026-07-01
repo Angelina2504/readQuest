@@ -45,6 +45,9 @@ jobs:
           echo "KERNEL_CLASS='App\Kernel'" > .env.test
           echo 'APP_SECRET=$ecretf0rt3st' >> .env.test
           echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env.test
+      
+      - name: Create test database
+        run: mysql -u root -ppassword -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS readquest_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
       - name: Install Composer dependencies
         working-directory: backend
