@@ -152,4 +152,17 @@ const handleAdd = async (book) => {
   font-weight: 500;
   margin-bottom: 12px;
 }
+
+@media (max-width: 768px) {
+  .search-wrapper {
+    padding: 24px 16px 12px;
+  }
+  .search-bar {
+    flex-wrap: wrap;
+  }
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+  }
+}
 </style>

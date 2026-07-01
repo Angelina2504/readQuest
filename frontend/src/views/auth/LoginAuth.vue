@@ -151,4 +151,15 @@ button:hover {
   text-align: center;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .form-Login-container {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+  form {
+    border-radius: 20px;
+    padding: 28px 20px;
+  }
+}
 </style>

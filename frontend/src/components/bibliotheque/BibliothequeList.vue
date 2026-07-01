@@ -151,4 +151,14 @@ select {
   cursor: pointer;
   outline: none;
 }
+
+@media (max-width: 768px) {
+  .library-wrapper {
+    padding: 12px 16px 32px;
+  }
+  .library-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+  }
+}
 </style>

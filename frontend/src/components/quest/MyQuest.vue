@@ -147,4 +147,14 @@ const leaveQuest = async(id) => {
   background-color: #7a3535;
   color: #FFFFFF;
 }
+
+@media (max-width: 768px) {
+  .quest-wrapper {
+    padding: 0 16px 32px;
+  }
+  .quest-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+}
 </style>

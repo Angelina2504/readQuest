@@ -142,4 +142,69 @@ const partnerLinks = ([
   margin: 0;
   font-size: 13px;
 }
+
+@media (max-width: 768px) {
+  .footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px 8px;
+    padding: 32px 20px;
+    align-items: start;
+  }
+
+  /* Col 1 : liens du site */
+  .footer-column:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: unset;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Col 2 : logo centré */
+  .footer-logo {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+  }
+  .footer-logo img {
+    height: 70px;
+  }
+
+  /* Col 3 : crédibilité et sécurité */
+  .footer-column:nth-child(4) {
+    grid-column: 3;
+    grid-row: 1;
+    min-width: unset;
+    text-align: center;
+    align-items: center;
+  }
+
+  /* Col 1 row 2 : réseaux sociaux */
+  .footer-column:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+    min-width: unset;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Col 3 row 2 : partenaire */
+  .footer-columnright2 {
+    grid-column: 3;
+    grid-row: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-nav {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
 </style>

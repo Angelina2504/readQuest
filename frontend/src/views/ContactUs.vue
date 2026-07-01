@@ -130,4 +130,19 @@ button:hover {
   background-color: #833c3c;
   color: #FFFFFF;
 }
+
+@media (max-width: 768px) {
+  .contact-form-container {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+  form {
+    border-radius: 20px;
+    padding: 28px 20px;
+  }
+  .top-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
 </style>

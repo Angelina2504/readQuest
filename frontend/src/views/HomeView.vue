@@ -87,4 +87,23 @@ const buttonLinks = ([
   height: auto;
 }
 
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column-reverse;
+    padding: 32px 20px 48px;
+    text-align: center;
+  }
+  .content-left {
+    max-width: 100%;
+  }
+  .img-deco img {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .button-group {
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
 </style>
