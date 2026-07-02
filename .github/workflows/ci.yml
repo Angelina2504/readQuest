@@ -1,0 +1,102 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: readquest
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 3306:3306
+
+      mongodb:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, intl
+
+      - name: Create .env
+        working-directory: backend
+        run: |
+          echo 'APP_ENV=dev' > .env
+          echo 'APP_SECRET=placeholder' >> .env
+          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env
+          
+          echo 'MONGODB_URI=mongodb://localhost:27017' >> .env
+          echo 'MONGODB_DB=readquest_test' >> .env
+
+          echo 'DEFAULT_URI=http://localhost:8080' >> .env
+          echo 'CORS_ALLOW_ORIGIN=http://localhost:5173' >> .env
+          
+          echo 'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' >> .env
+          echo 'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' >> .env
+          echo 'JWT_PASSPHRASE=test_passphrase' >> .env
+          echo 'GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }}' >> .env
+
+      - name: Create .env.test
+        working-directory: backend
+        run: |
+          echo "KERNEL_CLASS='App\Kernel'" > .env.test
+          echo 'APP_SECRET=$ecretf0rt3st' >> .env.test
+          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env.test
+      
+      - name: Create test database
+        run: mysql -u root -ppassword -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS readquest_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist --no-scripts
+
+      - name: Generate JWT keypair
+        working-directory: backend
+        run: php bin/console lexik:jwt:generate-keypair --env=test --no-interaction
+
+      - name: Run migrations
+        working-directory: backend
+        run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+      - name: Run PHPUnit
+        working-directory: backend
+        run: php bin/phpunit
+
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Create .env
+        working-directory: frontend
+        run: echo "VITE_API_BASE_URL=http://localhost:8080" > .env
+
+      - name: Run Vitest
+        working-directory: frontend
+        run: npm run test:unit -- --run

@@ -20,7 +20,7 @@ class UserDetails
     #[ORM\Column(length: 30)]
     private ?string $gender = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
 
     #[ORM\OneToOne(inversedBy: 'userDetails', cascade: ['persist', 'remove'])]
