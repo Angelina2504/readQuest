@@ -16,6 +16,7 @@ Application de quête littéraire pour explorer de nouvelles lectures ou se moti
 
 - Docker & Docker Compose
 - Git
+- Une clé API Google Books
 
 ## Installation
 
@@ -32,22 +33,29 @@ cd readQuest
 cp .env.example .env
 cp backend/.env.example backend/.env
 cp backend/.env.test.example backend/.env.test
+cp frontend/.env.example frontend/.env
 ```
 
 Remplir les valeurs dans chaque `.env`.
 
-### 3. Générer les clés JWT
-
-```bash
-docker exec readquest-backend php bin/console lexik:jwt:generate-keypair
-```
-
-### 4. Lancer l'application
+### 3. Lancer l'application
 
 > **Note :** Docker Desktop doit être lancé avant d'exécuter cette commande.
 
 ```bash
 docker compose up -d
+```
+
+Les dépendances Node.js sont installées automatiquement au démarrage du conteneur frontend. Si le dossier `vendor/` du backend est absent, lancer :
+
+```bash
+docker exec readquest-backend composer install
+```
+
+### 4. Générer les clés JWT
+
+```bash
+docker exec readquest-backend php bin/console lexik:jwt:generate-keypair
 ```
 
 ### 5. Initialiser la base de données (premier lancement uniquement)
