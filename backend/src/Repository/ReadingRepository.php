@@ -37,7 +37,7 @@ class ReadingRepository extends ServiceEntityRepository
             WHERE r.user_id = :user 
             AND r.reading_status = :status
             AND r.reading_end >= :startDate
-            AND g.genre_name = :genre';
+            AND g.genre_name LIKE :genre';
     $result = $conn->executeQuery($sql, [
         'user' => $user->getId(),
         'startDate' => $startDate->format('Y-m-d'), 
@@ -60,6 +60,18 @@ class ReadingRepository extends ServiceEntityRepository
             AND a.autor_name = :autor';
     $result = $conn->executeQuery($sql, ['user' => $user->getId(), 'startDate' => $startDate->format('Y-m-d'), 'autor' => $autor, 'status' => 'lu']);
     return (int) $result->fetchOne();
+}
+
+    public function findByUserWithBooks($user): array
+{
+    return $this->createQueryBuilder('r')
+        ->select('r', 'b', 'g')
+        ->join('r.book', 'b')
+        ->leftJoin('b.genres', 'g')
+        ->where('r.user = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
 }
 
     //    /**

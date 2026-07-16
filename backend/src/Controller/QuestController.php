@@ -25,7 +25,9 @@ final class QuestController extends AbstractController
     #[Route('/api/quests', name: 'quest_available', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
-        $quests = $this->questRepository->findAll();    
+        $page = max(1, (int) $request->query->get('page',1));
+        $limit = 20;
+        $quests = $this->questRepository->findBy([], [], $limit,($page - 1) * $limit);    
         $questStock= [];
 
         foreach ($quests as $quest) {
@@ -91,7 +93,7 @@ final class QuestController extends AbstractController
             return $this->json(['message' => 'Unauthorized'], 401);
         }
 
-        $participations = $this->participationRepository->findBy(['user' => $user]);
+        $participations = $this->participationRepository->findByUserWithQuests($user);
 
         $myquests = [];
 
@@ -128,6 +130,10 @@ final class QuestController extends AbstractController
 
         if($participation === null){
             return $this->json(['message' => 'Participation not found'], 404);
+        }
+
+        if($participation->getParticipStatut() === 'completee'){
+            return $this->json(['message' => 'Quest already completed, cannot leave'], 403);
         }
 
         $this->entityManager->remove($participation);

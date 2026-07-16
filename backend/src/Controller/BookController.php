@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BookRepository;
 use App\Repository\ReadingRepository;
@@ -24,6 +26,7 @@ final class BookController extends AbstractController
 
     public function __construct(
     private HttpClientInterface $httpClient,
+    private CacheInterface $cache,
     private BookRepository $bookRepository,
     private EntityManagerInterface $entityManager,
     private ReadingRepository $readingRepository,
@@ -42,31 +45,53 @@ final class BookController extends AbstractController
         return $this->json(['message' => 'Search query is required'], 400);
            }
 
-         $response = $this->httpClient->request('GET','https://www.googleapis.com/books/v1/volumes',['query' => ['q' => $q, 'key' => $_ENV['GOOGLE_BOOKS_API_KEY']]]);
+         $cacheKey = 'google_books_' . md5($q);
 
-         $data = $response->toArray();
-         
-        $books = [];
+        try {
+            $books = $this->cache->get($cacheKey, function (ItemInterface $item) use ($q): array {
+                $item->expiresAfter(3600);
 
-        if(empty($data['items'])){
-            return $this->json([], 200);
-        };
-         
-        foreach ($data['items'] as $item) {
-        $identifiers = $item['volumeInfo']['industryIdentifiers'] ?? [];
-        $isbn13 = array_column($identifiers, 'identifier', 'type')['ISBN_13'] ?? null;
-            $books[] = [
-            'book_name' => $item['volumeInfo']['title'] ?? null,
-            'book_isbn' => $isbn13,
-            'book_publication' => $item['volumeInfo']['publishedDate'] ?? null,
-            'book_page' => $item['volumeInfo']['pageCount'] ?? null,
-            'book_description' => $item['volumeInfo']['description'] ?? null,
-            'book_language' => $item['volumeInfo']['language'] ?? null,
-            'book_cover' => $item['volumeInfo']['imageLinks']['thumbnail'] ?? null,
-            'book_autors' => $item['volumeInfo']['authors'] ?? [],
-            'books_genre' => $item['volumeInfo']['categories'] ?? []
-            ];
-            
+                $maxRetries = 3;
+                $attempt = 0;
+                do {
+                    $response = $this->httpClient->request('GET', 'https://www.googleapis.com/books/v1/volumes', [
+                        'query' => ['q' => $q, 'key' => $_ENV['GOOGLE_BOOKS_API_KEY']]
+                    ]);
+                    $statusCode = $response->getStatusCode();
+                    $attempt++;
+                } while ($statusCode === 503 && $attempt < $maxRetries);
+
+                if ($statusCode !== 200) {
+                    throw new \RuntimeException('API unavailable');
+                }
+
+                $data = $response->toArray();
+
+                if (empty($data['items'])) {
+                    return [];
+                }
+
+                $books = [];
+                foreach ($data['items'] as $item) {
+                    $identifiers = $item['volumeInfo']['industryIdentifiers'] ?? [];
+                    $isbn13 = array_column($identifiers, 'identifier', 'type')['ISBN_13'] ?? null;
+                    $books[] = [
+                        'book_name'        => $item['volumeInfo']['title'] ?? null,
+                        'book_isbn'        => $isbn13,
+                        'book_publication' => $item['volumeInfo']['publishedDate'] ?? null,
+                        'book_page'        => $item['volumeInfo']['pageCount'] ?? null,
+                        'book_description' => $item['volumeInfo']['description'] ?? null,
+                        'book_language'    => $item['volumeInfo']['language'] ?? null,
+                        'book_cover'       => $item['volumeInfo']['imageLinks']['thumbnail'] ?? null,
+                        'book_autors'      => $item['volumeInfo']['authors'] ?? [],
+                        'books_genre'      => $item['volumeInfo']['categories'] ?? [],
+                    ];
+                }
+
+                return $books;
+            });
+        } catch (\RuntimeException) {
+            return $this->json(['message' => 'Recherche indisponible, réessaie dans un instant'], 503);
         }
 
         return $this->json($books);
@@ -140,23 +165,35 @@ final class BookController extends AbstractController
 
         $this->activityLogService->log($user->getId(), 'book_added', $book->getBookName());
 
-        return $this->json(['message' => 'Book created successfully'], 201);
+        return $this->json([
+            'message' => 'Book created successfully',
+            'reading' => [
+                'reading_id'     => $reading->getId(),
+                'reading_status' => $reading->getReadingStatus(),
+                'book_name'      => $book->getBookName(),
+                'book_cover'     => $book->getBookCover(),
+                'book_isbn'      => $book->getBookIsbn(),
+                'book_genres'    => array_map(fn($g) => $g->getGenreName(), $book->getGenres()->toArray()),
+            ]
+        ], 201);
         
     }
     #[Route('/api/books/library', name: 'app_books_library', methods: ['GET'])]
     public function getLibrary (): JsonResponse
     {
         $user = $this->getUser();
-        $readings = $this->readingRepository->findBy(['user' => $user]);    
+        $readings = $this->readingRepository->findByUserWithBooks($user);    
         $library = [];
 
         foreach ($readings as $reading) {
+            $genres = array_map(fn($g) => $g->getGenreName(), $reading->getBook()->getGenres()->toArray());
             $library[] = [
                 'reading_id' => $reading->getId(),
                 'reading_status' => $reading->getReadingStatus(),
                 'book_name' => $reading->getBook()->getBookName(),
                 'book_cover' => $reading->getBook()->getBookCover(),
                 'book_isbn' => $reading->getBook()->getBookIsbn(),
+                'book_genres' => $genres,
             ];
         }
         return $this->json($library);

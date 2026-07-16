@@ -5,8 +5,11 @@
         <p v-if="library.length === 0" class="empty">Aucun livre dans votre bibliothèque.</p>
         <div class="library-grid">
             <div class="book-card" v-for="book in library" :key="book.book_isbn">
-                <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" />
+                <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" loading="lazy" />
                 <p class="book-title">{{ book.book_name }}</p>
+                <div class="book-genres" v-if="book.book_genres?.length">
+                    <span class="genre-tag" v-for="genre in book.book_genres" :key="genre">{{ genre }}</span>
+                </div>
                 <select v-model="book.reading_status" @change="updateStatus(book)">
                   <option value="a_lire">À lire</option>
                   <option value="en_cours">En cours</option>
@@ -20,7 +23,7 @@
 
 <script setup>
 import { bibliothequeService} from '@/services/bibliothequeService';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineExpose } from 'vue';
 
 const errorMessage = ref(null)
 const library = ref([]);
@@ -50,6 +53,12 @@ const deleteBook = async(id) => {
     errorMessage.value = "Data non chargées";
   }
 }
+
+const addBook = (reading) => {
+    library.value.push(reading)
+}
+
+defineExpose({ addBook })
 
 </script>
 
@@ -121,6 +130,22 @@ const deleteBook = async(id) => {
   background-color: #833c3c;
   border-radius: 25px;
   padding: 4px 12px;
+}
+
+.book-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.genre-tag {
+  font-size: 11px;
+  color: #833c3c;
+  background-color: #f5ece8;
+  border-radius: 25px;
+  padding: 2px 8px;
+  border: 1px solid #EDE4D3;
 }
 
 button {

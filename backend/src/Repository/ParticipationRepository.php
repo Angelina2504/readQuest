@@ -16,6 +16,17 @@ class ParticipationRepository extends ServiceEntityRepository
         parent::__construct($registry, Participation::class);
     }
 
+    public function findByUserWithQuests($user): array
+    {
+    return $this->createQueryBuilder('p')
+        ->select('p', 'q')
+        ->join('p.quest', 'q')
+        ->where('p.user = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+    }
+
     //    /**
     //     * @return Participation[] Returns an array of Participation objects
     //     */
