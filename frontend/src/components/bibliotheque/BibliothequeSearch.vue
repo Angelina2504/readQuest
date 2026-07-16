@@ -3,13 +3,17 @@
     <div class="search-bar">
         
         <input type="text" name="search" v-model="search" placeholder="Rechercher un livre...">
-        <button class="btn-search" @click="handleSearch">Rechercher</button>
+        <button class="btn-search" @click="handleSearch" :disabled="loading">{{ loading ? 'Recherche...' : 'Rechercher' }}</button>
     </div>
       <p v-if="successMessage" class="success">{{ successMessage }}</p>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <div class="results-grid">
         <div class="book-card" v-for="book in results" :key="book.book_isbn">
-            <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" />
+            <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name"/>
             <p>{{ book.book_name }}</p>
+            <div class="book-genres" v-if="book.books_genre?.length">
+                <span class="genre-tag" v-for="genre in book.books_genre" :key="genre">{{ genre }}</span>
+            </div>
             <button class="btn-add" @click="handleAdd(book)">Ajouter</button>
         </div>
     </div>
@@ -23,22 +27,29 @@ import { bibliothequeService } from '@/services/bibliothequeService';
 const search = ref('');
 const results = ref([]);
 const successMessage = ref(null);
+const errorMessage = ref(null);
+const loading = ref(false);
 const emit = defineEmits(['bookAdded'])
 
 const handleSearch = async () => {
+    loading.value = true;
+    errorMessage.value = null;
     try {
        results.value = await bibliothequeService.searchBooks(search.value)
        successMessage.value = null
     } catch (error) {
         console.error("Erreur lors de la recherche de livres", error);
+        errorMessage.value = error.response?.data?.message ?? 'Une erreur est survenue, réessaie dans un instant.';
+    } finally {
+        loading.value = false;
     }
 }
 
 const handleAdd = async (book) => {
     try {
-        await bibliothequeService.addBook({ ...book,reading_status: 'a_lire'});
-        successMessage.value="Livre ajouté à votre bibliothèque";
-        emit('bookAdded')
+        const response = await bibliothequeService.addBook({ ...book, reading_status: 'a_lire' });
+        successMessage.value = "Livre ajouté à votre bibliothèque";
+        emit('bookAdded', response.reading)
     } catch (error) {
         console.error("Erreur lors de l'ajout du livre", error);
     }
@@ -129,6 +140,22 @@ const handleAdd = async (book) => {
   text-align: center;
 }
 
+.book-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.genre-tag {
+  font-size: 11px;
+  color: #833c3c;
+  background-color: #f5ece8;
+  border-radius: 25px;
+  padding: 2px 8px;
+  border: 1px solid #EDE4D3;
+}
+
 .btn-add {
   padding: 6px 20px;
   background-color: #FFFFFF;
@@ -148,6 +175,13 @@ const handleAdd = async (book) => {
 
 .success {
   color: #385a3f;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.error {
+  color: #b0413e;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 12px;

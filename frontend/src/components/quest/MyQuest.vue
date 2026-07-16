@@ -12,7 +12,8 @@
                 </div>
                 <p class="quest-description">{{ participation.quest_description }}</p>
                 <p class="quest-progression">{{ participation.particip_progression }} / {{ participation.quest_criteria_target }}</p>
-                <button class="btn-leave" @click="leaveQuest(participation.quest_id)">Quitter la quête</button>
+                <span v-if="participation.particip_statut === 'completee'" class="quest-validated">Quête validée ✓</span>
+                <button v-else class="btn-leave" @click="leaveQuest(participation.quest_id)">Quitter la quête</button>
             </div>
         </div>
     </div>
@@ -129,6 +130,16 @@ const leaveQuest = async(id) => {
   font-weight: 600;
   color: #833c3c;
   margin: 0;
+}
+
+.quest-validated {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3a7a4a;
+  background-color: #e8f5ec;
+  border: 1px solid #a8d5b5;
+  border-radius: 25px;
+  padding: 6px 16px;
 }
 
 .btn-leave {

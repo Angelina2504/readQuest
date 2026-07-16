@@ -1,7 +1,7 @@
 <template>
     <main class="main-content">
-      <BibliothequeSearch @bookAdded="refreshList" />
-      <BibliothequeList :key="listKey" />
+      <BibliothequeSearch @bookAdded="onBookAdded" />
+      <BibliothequeList ref="listRef" />
     </main>
 </template>
 
@@ -10,9 +10,10 @@ import { ref } from 'vue';
 import BibliothequeSearch from '@/components/bibliotheque/BibliothequeSearch.vue';
 import BibliothequeList from '@/components/bibliotheque/BibliothequeList.vue';
 
-const listKey = ref(0)
-const refreshList = () => listKey.value++
-
+const listRef = ref(null)
+const onBookAdded = (reading) => {
+    if (reading) listRef.value?.addBook(reading)
+}
 </script>
 
 <style scoped>
