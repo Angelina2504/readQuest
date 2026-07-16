@@ -39,7 +39,13 @@ final class UserController extends AbstractController
         };
 
         if (!$userDetails) {
-             return $this->json(['message' => 'non-existent profile'], 404);
+             return $this->json([
+                'alias'    => $user->getUserAlias(),
+                'email'    => $user->getEmail(),
+                'birthday' => null,
+                'gender'   => null,
+                'avatar'   => null,
+             ], 200);
         }
     }
 
@@ -97,7 +103,17 @@ final class UserController extends AbstractController
         $userDetails = $user->getUserDetails();
 
         if (!$userDetails) {
-            return $this->json(['message' => 'No UserDetails found'], 404);
+             $userDetails = new UserDetails();
+             $userDetails->setUser($user);
+             $this->entityManager->persist($userDetails);
+        }
+
+        $oldAvatar = $userDetails->getAvatar();
+        if ($oldAvatar) {
+            $oldPath = $this->getParameter('kernel.project_dir') . '/public/' . $oldAvatar;
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
         }
 
         $nomFichier = bin2hex(random_bytes(16)) . '.' . $file->getClientOriginalExtension();
