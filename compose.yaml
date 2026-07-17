@@ -89,6 +89,10 @@ services:
       MONGODB_URI: "mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@dbmongo:27017/?authSource=admin"
       MONGODB_DB: "readquest"
       APP_ENV: dev
+      APP_SECRET: ${APP_SECRET}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+      GOOGLE_BOOKS_API_KEY: ${GOOGLE_BOOKS_API_KEY}
 
     depends_on:
       dbsql:
