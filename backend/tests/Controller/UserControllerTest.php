@@ -48,7 +48,7 @@ class UserControllerTest extends WebTestCase
         $this->token = $data['token'];
     }
 
-    public function testGetProfileWhithoutUserDetailsReturns404(): void {
+    public function testGetProfileWithoutUserDetailsReturnsDefaultProfile(): void {
         $this->client->request(
             'GET',
             '/api/user/profile',
@@ -56,7 +56,11 @@ class UserControllerTest extends WebTestCase
             [],
             ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->token]
         );
-        $this->assertResponseStatusCodeSame(404);
+        $this->assertResponseStatusCodeSame(200);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertSame('testuser', $data['alias']);
+        $this->assertNull($data['birthday']);
+        $this->assertNull($data['avatar']);
     }
 
     public function testPatchProfileCreatesUserDetails(): void {

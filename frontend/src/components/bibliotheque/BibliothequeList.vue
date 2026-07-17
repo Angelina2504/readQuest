@@ -23,7 +23,7 @@
 
 <script setup>
 import { bibliothequeService} from '@/services/bibliothequeService';
-import { onMounted, ref, defineExpose } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const errorMessage = ref(null)
 const library = ref([]);
