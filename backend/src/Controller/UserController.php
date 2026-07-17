@@ -55,21 +55,27 @@ final class UserController extends AbstractController
 
     $data = json_decode($request->getContent(), true);
 
+    if ($data === null) {
+        return $this->json(['message' => 'Invalid JSON'], 400);
+    }
+
     $user = $this->getUser();
+
+    $birthday = isset($data['birthday']) ? new \DateTime($data['birthday']) : null;
 
     if ($user->getUserDetails()){
         $userDetails = $user->getUserDetails();
-        $userDetails->setBirthday(new \DateTime($data['birthday']));
-        $userDetails->setGender($data['gender']);
-        $user->setUserAlias($data['alias']);
-        $user->setEmail($data['email']);
-        
+        $userDetails->setBirthday($birthday);
+        $userDetails->setGender($data['gender'] ?? null);
+        $user->setUserAlias($data['alias'] ?? $user->getUserAlias());
+        $user->setEmail($data['email'] ?? $user->getEmail());
+
     }else{
         $userDetails = new UserDetails();
-        $userDetails->setBirthday(new \DateTime($data['birthday']));
-        $userDetails->setGender($data['gender']);
-        $user->setUserAlias($data['alias']);
-        $user->setEmail($data['email']);
+        $userDetails->setBirthday($birthday);
+        $userDetails->setGender($data['gender'] ?? null);
+        $user->setUserAlias($data['alias'] ?? $user->getUserAlias());
+        $user->setEmail($data['email'] ?? $user->getEmail());
     }
      
     $userDetails->setUser($user);
@@ -116,7 +122,7 @@ final class UserController extends AbstractController
             }
         }
 
-        $nomFichier = bin2hex(random_bytes(16)) . '.' . $file->getClientOriginalExtension();
+        $nomFichier = bin2hex(random_bytes(16)) . '.' . ($file->guessExtension() ?? 'bin');
         $file->move($this->getParameter('kernel.project_dir') . '/public/uploads/avatars/', $nomFichier);
         $userDetails->setAvatar('uploads/avatars/' . $nomFichier);
 

@@ -100,13 +100,19 @@ final class BookController extends AbstractController
     public function addBooks (Request $request): JsonResponse
     {  
         $data = json_decode($request->getContent(), true);
+
+        if ($data === null) {
+            return $this->json(['message' => 'Invalid JSON'], 400);
+        }
+
         $user = $this->getUser();
 
         if($user === null){
             return $this->json(['message' => 'Unauthorized'], 401);
         }
 
-        $book = $this->bookRepository->findOneBy(['book_isbn' => $data['book_isbn']]);
+        $isbn = $data['book_isbn'] ?? null;
+        $book = $isbn ? $this->bookRepository->findOneBy(['book_isbn' => $isbn]) : null;
         
 
         if($book === null){
@@ -203,38 +209,50 @@ final class BookController extends AbstractController
     public function patchStatut(int $id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $reading = $this->readingRepository->findOneBy(['id'=>$id]);
 
-        if($reading === null){
+        if ($data === null) {
+            return $this->json(['message' => 'Invalid JSON'], 400);
+        }
+
+        $reading = $this->readingRepository->find($id);
+
+        if ($reading === null) {
             return $this->json(['message' => 'Reading not found'], 404);
         }
-           $reading->setReadingStatus($data['reading_status']);
-        
-        if($data['reading_status'] === 'lu') {
-        $reading->setReadingEnd(new \DateTime());
+
+        if ($reading->getUser() !== $this->getUser()) {
+            return $this->json(['message' => 'Access denied'], 403);
         }
-        
+
+        $reading->setReadingStatus($data['reading_status']);
+
+        if ($data['reading_status'] === 'lu') {
+            $reading->setReadingEnd(new \DateTime());
+        }
+
         $this->entityManager->flush();
 
         $user = $reading->getUser();
         $this->questprogressionService->updateProgression($user);
-
         $this->activityLogService->log($user->getId(), 'statut_patched', $reading->getBook()->getBookName());
 
         return $this->json(['message' => 'Statut update'], 200);
     }
 
-     #[Route('/api/library/{id}', name: 'app_library_delete', methods: ['DELETE'])]
+    #[Route('/api/library/{id}', name: 'app_library_delete', methods: ['DELETE'])]
     public function deleteReading(int $id): JsonResponse
     {
-        $reading = $this->readingRepository->findOneBy(['id'=>$id]);
+        $reading = $this->readingRepository->find($id);
 
-         if($reading === null){
+        if ($reading === null) {
             return $this->json(['message' => 'Reading not found'], 404);
         }
 
-        $this->entityManager->remove($reading);
+        if ($reading->getUser() !== $this->getUser()) {
+            return $this->json(['message' => 'Access denied'], 403);
+        }
 
+        $this->entityManager->remove($reading);
         $this->entityManager->flush();
 
         return $this->json(['message' => 'Book Delete'], 200);

@@ -115,10 +115,14 @@ final class QuestController extends AbstractController
         return $this->json($myquests);
     }
 
-     #[Route('/api/quests/{id}/leave', name: 'quest_delete', methods: ['DELETE'])]
+    #[Route('/api/quests/{id}/leave', name: 'quest_delete', methods: ['DELETE'])]
     public function questDelete(int $id): JsonResponse
     {
         $user = $this->getUser();
+
+        if ($user === null) {
+            return $this->json(['message' => 'Unauthorized'], 401);
+        }
 
         $quest = $this->questRepository->findOneBy(['id' => $id]);
 
