@@ -12,6 +12,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: readquest
+          MYSQL_USER: usersql
+          MYSQL_PASSWORD: sqlPass
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -34,19 +36,22 @@ jobs:
           php-version: '8.3'
           extensions: pdo_mysql, intl
 
+      - name: Alias dbsql to localhost
+        run: sudo sh -c 'echo "127.0.0.1 dbsql" >> /etc/hosts'
+
       - name: Create .env
         working-directory: backend
         run: |
           echo 'APP_ENV=dev' > .env
           echo 'APP_SECRET=placeholder' >> .env
-          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env
-          
+          echo 'DATABASE_URL="mysql://usersql:sqlPass@dbsql:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env
+
           echo 'MONGODB_URI=mongodb://localhost:27017' >> .env
           echo 'MONGODB_DB=readquest_test' >> .env
 
           echo 'DEFAULT_URI=http://localhost:8080' >> .env
           echo 'CORS_ALLOW_ORIGIN=http://localhost:5173' >> .env
-          
+
           echo 'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' >> .env
           echo 'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' >> .env
           echo 'JWT_PASSPHRASE=test_passphrase' >> .env
@@ -57,10 +62,12 @@ jobs:
         run: |
           echo "KERNEL_CLASS='App\Kernel'" > .env.test
           echo 'APP_SECRET=$ecretf0rt3st' >> .env.test
-          echo 'DATABASE_URL="mysql://root:password@127.0.0.1:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env.test
-      
+          echo 'DATABASE_URL="mysql://usersql:sqlPass@dbsql:3306/readquest?serverVersion=8.4&charset=utf8mb4"' >> .env.test
+
       - name: Create test database
-        run: mysql -u root -ppassword -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS readquest_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        run: |
+          mysql -u root -ppassword -h dbsql -e "CREATE DATABASE IF NOT EXISTS readquest_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -u root -ppassword -h dbsql -e "GRANT ALL PRIVILEGES ON readquest_test.* TO 'usersql'@'%'; FLUSH PRIVILEGES;"
 
       - name: Install Composer dependencies
         working-directory: backend

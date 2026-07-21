@@ -12,16 +12,20 @@ class ActivityLogService
     private DocumentManager $dm,
     ) {}
 
-     public function log($userId, $action, $details): void
-    {   
-        $log = new ActivityLog();
+    public function log($userId, $action, $details): void
+    {
+        try {
+            $log = new ActivityLog();
             $log->setUserId($userId);
             $log->setAction($action);
             $log->setDetails($details);
             $log->setCreateAt(new \DateTime());
- 
-        $this->dm->persist($log);
-        $this->dm->flush();
+
+            $this->dm->persist($log);
+            $this->dm->flush();
+        } catch (\Throwable) {
+            // MongoDB unavailable — log silently, don't break the main action
+        }
     }
 
 }

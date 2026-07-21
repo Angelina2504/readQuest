@@ -61,7 +61,7 @@ onMounted(async () => {
     const result = await profilService.getProfil()
     birthday.value = result.birthday
     gender.value = result.gender
-    avatar.value = result.avatar ? import.meta.env.VITE_API_BASE_URL + result.avatar : null
+    avatar.value = result.avatar ? import.meta.env.VITE_BACKEND_URL + '/' + result.avatar : null
     alias.value = result.alias
     email.value = result.email
 
@@ -94,7 +94,7 @@ const handleAvatarChange = async(event) => {
     formData.append('avatar', fichier)
     await profilService.uploadAvatar(formData)
     const result = await profilService.getProfil()
-    avatar.value = result.avatar ? import.meta.env.VITE_API_BASE_URL + result.avatar : null
+    avatar.value = result.avatar ? import.meta.env.VITE_BACKEND_URL + '/' + result.avatar : null
   } catch (error) {
     console.error("Erreur détaillée:", error);
     errorMessage.value = "Modification non enregistrer";

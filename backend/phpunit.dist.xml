@@ -14,6 +14,7 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <env name="APP_ENV" value="test" force="true" />
+        <env name="DATABASE_URL" value="mysql://usersql:sqlPass@dbsql:3306/readquest?serverVersion=8.4&amp;charset=utf8mb4" force="true" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
     </php>

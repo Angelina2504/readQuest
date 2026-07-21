@@ -17,10 +17,12 @@ class BookControllerTest extends WebTestCase
         $this->client = static::createClient();
         $this->em = static::getContainer()->get(EntityManagerInterface::class);
         $conn = $this->em->getConnection();
+        $conn->executeStatement('DELETE FROM participation');
         $conn->executeStatement('DELETE FROM reading');
         $conn->executeStatement('DELETE FROM book');
         $conn->executeStatement('DELETE FROM user_details');
         $conn->executeStatement('DELETE FROM user');
+        $this->em->clear();
         $this->client->request(
             'POST',
             '/api/auth/register',
