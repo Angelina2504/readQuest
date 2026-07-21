@@ -113,7 +113,6 @@ final class BookController extends AbstractController
 
         $isbn = $data['book_isbn'] ?? null;
         $book = $isbn ? $this->bookRepository->findOneBy(['book_isbn' => $isbn]) : null;
-        
 
         if($book === null){
             $book = new Book();
@@ -136,7 +135,6 @@ final class BookController extends AbstractController
             $this->entityManager->persist($genre);
             $book->addGenre($genre);
         }
-
         foreach ($data['book_autors'] ?? [] as $autorName) {
 
         $autor =$this->autorRepository->findOneBy(['autor_name' => $autorName]);
@@ -148,7 +146,6 @@ final class BookController extends AbstractController
             $this->entityManager->persist($autor);
             $book->addAutor($autor);
         } 
-
             $this->entityManager->persist($book);
             $this->entityManager->flush();
         }
@@ -158,7 +155,6 @@ final class BookController extends AbstractController
 
         if($existingReading !== null){
             return $this->json(['message' => 'Book or reading already in database'], 200);
-        
         }
 
         $reading = new Reading();
@@ -168,7 +164,6 @@ final class BookController extends AbstractController
         
         $this->entityManager->persist($reading);
         $this->entityManager->flush();
-
         $this->activityLogService->log($user->getId(), 'book_added', $book->getBookName());
 
         return $this->json([
@@ -181,9 +176,9 @@ final class BookController extends AbstractController
                 'book_isbn'      => $book->getBookIsbn(),
                 'book_genres'    => array_map(fn($g) => $g->getGenreName(), $book->getGenres()->toArray()),
             ]
-        ], 201);
-        
+        ], 201);     
     }
+
     #[Route('/api/books/library', name: 'app_books_library', methods: ['GET'])]
     public function getLibrary (): JsonResponse
     {
