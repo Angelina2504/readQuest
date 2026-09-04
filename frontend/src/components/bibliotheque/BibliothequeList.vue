@@ -1,0 +1,189 @@
+<template>
+    <div class="library-wrapper">
+        <h2 class="library-title">Ma bibliothèque</h2>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <p v-if="library.length === 0" class="empty">Aucun livre dans votre bibliothèque.</p>
+        <div class="library-grid">
+            <div class="book-card" v-for="book in library" :key="book.book_isbn">
+                <img :src="book.book_cover || 'https://placehold.co/120x160?text=No+cover'" :alt="book.book_name" loading="lazy" />
+                <p class="book-title">{{ book.book_name }}</p>
+                <div class="book-genres" v-if="book.book_genres?.length">
+                    <span class="genre-tag" v-for="genre in book.book_genres" :key="genre">{{ genre }}</span>
+                </div>
+                <select v-model="book.reading_status" @change="updateStatus(book)">
+                  <option value="a_lire">À lire</option>
+                  <option value="en_cours">En cours</option>
+                  <option value="lu">Lu</option>
+                </select>
+                <button @click="deleteBook(book.reading_id)">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { bibliothequeService} from '@/services/bibliothequeService';
+import { onMounted, ref } from 'vue';
+
+const errorMessage = ref(null)
+const library = ref([]);
+const updateStatus = async (book) => {
+    try {
+        await bibliothequeService.updateReading(book.reading_id, book.reading_status)
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+}
+
+onMounted(async () => {
+  try {
+    library.value = await bibliothequeService.getLibrary()
+  } catch (error) {
+    console.error("Erreur détaillée:", error);
+    errorMessage.value = "Data non chargées";
+  }
+})
+
+const deleteBook = async(id) => {
+  try {
+    await bibliothequeService.deleteReading(id)
+    library.value = library.value.filter(b => b.reading_id !== id)
+  } catch (error) {
+     console.error("Erreur détaillée:", error);
+    errorMessage.value = "Data non chargées";
+  }
+}
+
+const addBook = (reading) => {
+    library.value.push(reading)
+}
+
+defineExpose({ addBook })
+
+</script>
+
+<style scoped>
+.library-wrapper {
+  padding: 16px 20px 40px;
+  background-color: #FDF8F3;
+}
+
+.library-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #833c3c;
+  margin-bottom: 24px;
+}
+
+.empty {
+  color: #525252;
+  font-size: 14px;
+}
+
+.error {
+  color: #7a3535;
+  font-size: 14px;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: #FFFFFF;
+  border: 2px solid #EDE4D3;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease;
+}
+
+.book-card:hover {
+  border-color: #833c3c;
+}
+
+.book-card img {
+  width: 100%;
+  max-width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.book-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  text-align: center;
+}
+
+.book-status {
+  font-size: 12px;
+  color: #FFFFFF;
+  background-color: #833c3c;
+  border-radius: 25px;
+  padding: 4px 12px;
+}
+
+.book-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.genre-tag {
+  font-size: 11px;
+  color: #833c3c;
+  background-color: #f5ece8;
+  border-radius: 25px;
+  padding: 2px 8px;
+  border: 1px solid #EDE4D3;
+}
+
+button {
+  padding: 6px 16px;
+  background-color: #FFFFFF;
+  border: 2px solid #7a3535;
+  border-radius: 25px;
+  color: #7a3535;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #7a3535;
+  color: #FFFFFF;
+}
+
+select {
+  padding: 4px 12px;
+  border: 2px solid #833c3c;
+  border-radius: 25px;
+  color: #833c3c;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .library-wrapper {
+    padding: 12px 16px 32px;
+  }
+  .library-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+  }
+}
+</style>

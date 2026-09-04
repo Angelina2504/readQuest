@@ -1,9 +1,109 @@
 <template>
-  
+  <div class="home-container">
+    <div class="content-left">
+      <p class="hero-text">
+        Les pages murmurent des défis. Accomplis des quêtes, récolte des récompenses et explore un monde sculpté par les mots.
+      </p>
+      
+      <div class="button-group">
+        <router-link 
+          v-for="button in buttonLinks" 
+          :key="button.text" 
+          :to="button.path" 
+          class="custom-button"
+        >
+          {{ button.text }}
+        </router-link>
+      </div>
+    </div>
+
+    <div class="img-deco">
+       <img src="@/assets/deco/homeLessBG.png" alt="Illustration ReadQuest" />
+    </div>
+  </div>
 </template>
 
 <script setup>
+
+const buttonLinks = ([
+
+    { text: 'Inscription', path: '/signin', isHovered: false },
+    { text: 'Se connecter', path: '/login', isHovered: false },
+
+])
+
 </script>
 
 <style scoped>
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 50px;
+  gap: 20px;
+  background-color: #FDF8F3; 
+  min-height: 60vh;
+}
+
+.content-left {
+  max-width: 450px;
+  text-align: center; 
+}
+
+.hero-text {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #333333;
+  margin-bottom: 40px;
+  padding: 30px;
+}
+
+.button-group {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.custom-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #EDE4D3;
+  border: 1px solid #833c3c;
+  border-radius: 25px;  
+  color: #333333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+ background-color: #833c3c;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.img-deco img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column-reverse;
+    padding: 32px 20px 48px;
+    text-align: center;
+  }
+  .content-left {
+    max-width: 100%;
+  }
+  .img-deco img {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .button-group {
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
 </style>
